@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPI Bahasa Arab - Nama Hewan</title>
+    <!-- Tailwind CSS untuk styling responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;600;700&display=swap');
+
+        :root {
+            --islamic-green: #15803d;
+            --gold-elegant: #ca8a04;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdf4; /* Light green background */
+            background-image: radial-gradient(#bbf7d0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            line-height: 1.6;
+        }
+
+        /* Card Flip Animation */
+        .flip-card {
+            background-color: transparent;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1rem;
+        }
+
+        .flip-card-front {
+            background-color: white;
+            border: 2px solid #22c55e;
+        }
+
+        .flip-card-back {
+            background-color: var(--islamic-green);
+            color: white;
+            transform: rotateY(180deg);
+            border: 2px solid var(--gold-elegant);
+        }
+
+        /* Animations */
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); opacity: 1; }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes slideUp {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .animate-bounce-in { animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
+        .animate-slide-up { animation: slideUp 0.4s ease-out both; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: slideUp 0.4s ease-out; }
+
+        /* Quiz Custom Styles */
+        .dropzone { min-height: 60px; min-width: 60px; border: 2px dashed #94a3b8; border-radius: 0.75rem; display: flex; justify-content: center; align-items: center; background-color: #f8fafc; transition: all 0.2s;}
+        .dropzone.filled { border-style: solid; border-color: #22c55e; background-color: #f0fdf4; }
+        .draggable-item { cursor: pointer; user-select: none; transition: transform 0.2s; }
+        .draggable-item:active { transform: scale(0.9); }
+        .selected-drag { outline: 4px solid #3b82f6; outline-offset: 2px; border-radius: 50%; background-color: #eff6ff;}
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #22c55e; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #16a34a; }
+        
+        @keyframes marquee {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 25s linear infinite;
+        }
+        .splash-menu-card {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col">
+
+    <div id="splash-screen" class="fixed inset-0 z-[60] bg-[#f0fdf4] bg-opacity-95 flex flex-col justify-between overflow-y-auto backdrop-blur-sm">
+        <!-- Marquee Info -->
+        <div class="bg-green-800 text-white py-3 overflow-hidden shadow-md flex-shrink-0 border-b-4 border-yellow-500 w-full">
+            <div class="animate-marquee text-base sm:text-lg font-semibold tracking-wide">
+                🌟 Ahlan wa Sahlan di Media Pembelajaran Interaktif (MPI) Bahasa Arab! 🌟 &nbsp;&nbsp;|&nbsp;&nbsp; 📚 Materi: أَسْمَاءُ الْحَيَوَانَاتِ (Nama-nama Hewan) &nbsp;&nbsp;|&nbsp;&nbsp; 🎯 Fase B / Kelas III - MIS Muhammadiyah Iloponu, Kec. Tibawa, Prov. Gorontalo &nbsp;&nbsp;|&nbsp;&nbsp; 💡 Mari belajar sambil bermain dengan riang gembira! 💡
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="flex-grow flex flex-col items-center pt-8 pb-12 px-4 text-center">
+            <div class="bg-white p-5 rounded-full shadow-xl mb-6 border-4 border-yellow-400 relative">
+                <span class="text-7xl sm:text-8xl">🕌</span>
+                <div class="absolute -bottom-2 -right-2 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full border-2 border-white shadow-sm">MI</div>
+            </div>
+            <h1 class="text-4xl sm:text-5xl font-bold text-green-800 mb-3 arabic-text drop-shadow-sm">أَسْمَاءُ الْحَيَوَانَاتِ</h1>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-yellow-600 mb-3">Nama-nama Hewan</h2>
+            <p class="text-green-800 font-semibold text-sm sm:text-base mb-8 bg-green-200 px-5 py-2 rounded-full inline-block border border-green-300 shadow-sm">Bermain & Belajar Bahasa Arab</p>
+            
+            <!-- Main Menu Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-4 w-full max-w-3xl px-2">
+                <button onclick="startApp('materi')" class="splash-menu-card bg-gradient-to-br from-green-600 to-green-700 text-white p-5 rounded-2xl shadow-lg border-b-4 border-green-900 flex flex-col items-center justify-center gap-3 transform transition hover:scale-105 active:scale-95 col-span-2 sm:col-span-1">
+                    <span class="text-4xl">🚀</span>
+                    <span class="font-bold text-base sm:text-lg">Mulai Belajar</span>
+                </button>
+                <button onclick="startApp('materi')" class="splash-menu-card bg-white text-green-800 p-4 rounded-2xl shadow-md border-b-4 border-green-200 flex flex-col items-center justify-center gap-2 hover:bg-green-50 active:scale-95">
+                    <span class="text-3xl">📖</span>
+                    <span class="font-bold text-sm">Materi Utama</span>
+                </button>
+                <button onclick="startApp('kuis')" class="splash-menu-card bg-white text-blue-800 p-4 rounded-2xl shadow-md border-b-4 border-blue-200 flex flex-col items-center justify-center gap-2 hover:bg-blue-50 active:scale-95">
+                    <span class="text-3xl">📝</span>
+                    <span class="font-bold text-sm">Kuis Evaluasi</span>
+                </button>
+                
+                <button onclick="openInfoModal('data_murid')" class="splash-menu-card bg-white text-gray-700 p-4 rounded-2xl shadow-md border-b-4 border-gray-200 flex flex-col items-center justify-center gap-2 hover:bg-gray-50 active:scale-95">
+                    <span class="text-3xl">👥</span>
+                    <span class="font-bold text-sm text-center">Data Murid</span>
+                </button>
+                <button onclick="openInfoModal('konteks')" class="splash-menu-card bg-white text-emerald-700 p-4 rounded-2xl shadow-md border-b-4 border-emerald-200 flex flex-col items-center justify-center gap-2 hover:bg-emerald-50 active:scale-95">
+                    <span class="text-3xl">🌴</span>
+                    <span class="font-bold text-sm text-center">Konteks Lokal</span>
+                </button>
+                <button onclick="openInfoModal('guru')" class="splash-menu-card bg-white text-purple-700 p-4 rounded-2xl shadow-md border-b-4 border-purple-200 flex flex-col items-center justify-center gap-2 hover:bg-purple-50 active:scale-95">
+                    <span class="text-3xl">👨‍🏫</span>
+                    <span class="font-bold text-sm text-center">Panel Guru</span>
+                </button>
+                
+                <button onclick="openInfoModal('tujuan')" class="splash-menu-card bg-white text-orange-700 p-4 rounded-2xl shadow-md border-b-4 border-orange-200 flex flex-col items-center justify-center gap-2 hover:bg-orange-50 active:scale-95">
+                    <span class="text-3xl">🎯</span>
+                    <span class="font-bold text-sm text-center">Tujuan Belajar</span>
+                </button>
+                <button onclick="openInfoModal('referensi')" class="splash-menu-card bg-white text-teal-700 p-4 rounded-2xl shadow-md border-b-4 border-teal-200 flex flex-col items-center justify-center gap-2 hover:bg-teal-50 active:scale-95">
+                    <span class="text-3xl">📚</span>
+                    <span class="font-bold text-sm text-center">Referensi</span>
+                </button>
+                <button onclick="openInfoModal('pengembang')" class="splash-menu-card bg-white text-pink-700 p-4 rounded-2xl shadow-md border-b-4 border-pink-200 flex flex-col items-center justify-center gap-2 hover:bg-pink-50 active:scale-95">
+                    <span class="text-3xl">👩‍💻</span>
+                    <span class="font-bold text-sm text-center">Pengembang</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="text-center py-4 bg-green-800 text-white font-semibold text-xs sm:text-sm flex-shrink-0 w-full">
+            Dikembangkan oleh Uswatun Hasan, S.Pd &copy; 2024 MIS Muhammadiyah Iloponu
+        </div>
+    </div>
+
+    <!-- Info Modal Reusable (Untuk Profil, Data, Dll) -->
+    <div id="info-modal" class="fixed inset-0 bg-black bg-opacity-60 z-[70] hidden flex justify-center items-center p-4 backdrop-blur-sm transition-opacity">
+        <div id="info-card" class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 max-w-lg w-full text-center transform scale-90 transition-transform duration-300 max-h-[85vh] flex flex-col relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-20 bg-green-600 rounded-t-3xl z-0"></div>
+            
+            <div id="info-icon" class="text-6xl mb-2 z-10 bg-white inline-block mx-auto rounded-full p-3 shadow-md border-4 border-green-100">ℹ️</div>
+            <h3 id="info-title" class="text-2xl font-bold mb-4 text-green-800 border-b-2 border-green-100 pb-3 z-10">Judul</h3>
+            
+            <div id="info-content" class="text-gray-700 mb-6 text-base sm:text-lg overflow-y-auto text-left leading-relaxed flex-grow z-10 pr-2">
+                Konten
+            </div>
+            
+            <button onclick="closeInfoModal()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-4 rounded-xl shadow-lg transition-transform transform hover:scale-105 active:scale-95 z-10 mt-auto text-lg">
+                Kembali
+            </button>
+        </div>
+    </div>
+
+    <header class="bg-green-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-4 sm:py-6 text-center">
+            <h1 class="text-2xl sm:text-3xl font-bold mb-1">أَسْمَاءُ الْحَيَوَانَاتِ</h1>
+            <h2 class="text-lg sm:text-xl font-semibold tracking-wide text-yellow-300">Mengenal Nama-Nama Hewan</h2>
+            <p class="text-sm mt-2 opacity-90">Fase B Kelas III • MIS Muhammadiyah Iloponu, Tibawa</p>
+        </div>
+        
+        <!-- Navigation Tabs -->
+        <nav class="flex justify-center bg-green-800 shadow-inner">
+            <div class="max-w-4xl w-full flex text-center">
+                <button onclick="switchTab('materi')" id="btn-materi" class="flex-1 py-3 text-sm sm:text-base font-semibold border-b-4 border-yellow-400 bg-green-900 transition-colors">📖 Materi</button>
+                <button onclick="switchTab('bermain')" id="btn-bermain" class="flex-1 py-3 text-sm sm:text-base font-semibold border-b-4 border-transparent hover:bg-green-700 transition-colors">🎮 Bermain</button>
+                <button onclick="switchTab('kuis')" id="btn-kuis" class="flex-1 py-3 text-sm sm:text-base font-semibold border-b-4 border-transparent hover:bg-green-700 transition-colors">📝 Kuis</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-grow max-w-4xl mx-auto w-full p-4 sm:p-6 pb-20">
+        
+        <section id="materi" class="tab-content active">
+            <div class="bg-white rounded-2xl shadow-md p-6 mb-8 text-center border-t-4 border-green-600">
+                <h3 class="text-xl font-bold text-green-700 mb-2">Ahlan wa Sahlan!</h3>
+                <p class="text-gray-600">Mari belajar kosakata nama-nama hewan dalam Bahasa Arab. Sentuh atau klik kartu di bawah ini untuk melihat artinya!</p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6" id="flashcards-container">
+                <!-- Flashcards will be injected here by JavaScript -->
+            </div>
+        </section>
+
+        <section id="bermain" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-md p-6 mb-6 text-center border-t-4 border-yellow-500">
+                <h3 class="text-xl font-bold text-yellow-600 mb-2">Tebak Hewan Interaktif</h3>
+                <p class="text-gray-600 mb-4">Pilih gambar hewan yang tepat sesuai dengan kosakata Bahasa Arab yang muncul!</p>
+                
+                <div class="bg-green-50 p-6 rounded-xl border-2 border-green-200">
+                    <p class="text-sm font-semibold text-green-700 mb-2 uppercase tracking-wide">Kata:</p>
+                    <div id="game-word-arabic" class="arabic-text text-5xl sm:text-7xl font-bold text-green-800 mb-6 drop-shadow-sm">
+                        <!-- Arabic word will appear here -->
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 max-w-md mx-auto" id="game-options">
+                        <!-- Options will be injected here -->
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-between items-center bg-gray-50 p-4 rounded-lg">
+                    <span class="font-bold text-gray-500">Skor: <span id="game-score" class="text-green-600 text-xl">0</span></span>
+                    <button onclick="initGame()" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-full shadow-lg transition-transform transform hover:scale-105 active:scale-95">
+                        🔄 Ulangi Game
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="kuis" class="tab-content">
+            <div id="quiz-intro" class="bg-white rounded-2xl shadow-md p-6 sm:p-8 text-center border-t-4 border-blue-500">
+                <h3 class="text-xl sm:text-2xl font-bold text-blue-700 mb-4">Evaluasi Pembelajaran</h3>
+                <p class="text-gray-600 mb-6">Uji pemahamanmu tentang kosakata hewan. Terdapat 10 soal bervariasi (Pilihan Ganda, Benar/Salah, & Mencocokkan). Siap menantang dirimu?</p>
+                
+                <div class="max-w-xs mx-auto mb-8 text-left space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Nama Lengkap:</label>
+                        <input type="text" id="student-name" class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors" placeholder="Ketik namamu...">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Kelas:</label>
+                        <select id="student-class" class="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors">
+                            <option value="">Pilih Kelas...</option>
+                            <option value="Kelas III A">Kelas III A</option>
+                            <option value="Kelas III B">Kelas III B</option>
+                            <option value="Kelas III C">Kelas III C</option>
+                        </select>
+                    </div>
+                    <p id="quiz-validation-msg" class="text-red-500 text-sm hidden font-medium text-center">Harap isi Nama dan Kelas terlebih dahulu!</p>
+                </div>
+
+                <button onclick="startQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 w-full sm:w-auto">
+                    Mulai Kuis Sekarang 🚀
+                </button>
+            </div>
+
+            <div id="quiz-container" class="hidden bg-white rounded-2xl shadow-md p-6 sm:p-8 border-t-4 border-blue-500">
+                <div class="flex justify-between items-center mb-6">
+                    <span class="text-sm font-bold text-gray-400 uppercase">Soal <span id="quiz-current">1</span> dari 10</span>
+                    <div class="w-1/2 bg-gray-200 rounded-full h-2.5">
+                        <div id="quiz-progress" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 10%"></div>
+                    </div>
+                </div>
+                
+                <div id="quiz-question-type" class="text-xs font-bold bg-blue-100 text-blue-700 px-3 py-1 rounded-full inline-block mb-3">Tipe Soal</div>
+                <h4 id="quiz-question" class="text-lg sm:text-xl font-semibold text-gray-800 mb-6 leading-relaxed">
+                    <!-- Question goes here -->
+                </h4>
+
+                <div id="quiz-options" class="space-y-3">
+                    <!-- Quiz options injected here -->
+                </div>
+            </div>
+
+            <div id="quiz-result" class="hidden bg-white rounded-2xl shadow-md p-6 sm:p-8 text-center border-t-4 border-green-500">
+                <div class="text-6xl mb-4" id="result-emoji">🏆</div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Kuis Selesai!</h3>
+                <div class="bg-gray-50 rounded-xl p-4 mb-6 inline-block mx-auto border border-gray-200">
+                    <p class="text-gray-600 font-medium">Nama: <span id="res-name" class="font-bold text-gray-800"></span></p>
+                    <p class="text-gray-600 font-medium">Kelas: <span id="res-class" class="font-bold text-gray-800"></span></p>
+                </div>
+                <p class="text-lg text-gray-600 mb-2">Nilai Akhir Kamu:</p>
+                <div class="text-7xl font-black text-green-600 mb-6 drop-shadow-sm" id="result-score">100</div>
+                <p id="result-message" class="text-md text-gray-600 mb-8 italic">Luar biasa! Pertahankan prestasimu.</p>
+                <button onclick="resetQuiz()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105">
+                    🔄 Coba Lagi
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Custom Modal/Dialog Overlay -->
+    <div id="feedback-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex justify-center items-center p-4 backdrop-blur-sm transition-opacity">
+        <div id="feedback-card" class="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 max-w-md w-full text-center transform scale-90 transition-transform duration-300">
+            <div id="feedback-icon" class="text-6xl mb-4">🌟</div>
+            <h3 id="feedback-title" class="text-2xl font-bold mb-2 text-gray-800">Bagus!</h3>
+            <p id="feedback-message" class="text-gray-600 mb-6 text-lg">Penjelasan ada di sini.</p>
+            <button onclick="closeModal()" id="feedback-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-xl transition-colors">
+                Lanjut
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 1. DATA KOSAKATA (Materi Utama)
+        const vocabulary = [
+            { id: 1, arabic: 'طَيْرٌ', latin: 'Thayrun', indo: 'Burung', emoji: '🐦' },
+            { id: 2, arabic: 'دَجَاجَةٌ', latin: 'Dajaajatun', indo: 'Ayam Betina', emoji: '🐔' },
+            { id: 3, arabic: 'إِوَزَّةٌ', latin: 'Iwazzatun', indo: 'Angsa', emoji: '🦢' },
+            { id: 4, arabic: 'مَاعِزٌ', latin: 'Maa\'izun', indo: 'Kambing', emoji: '🐐' },
+            { id: 5, arabic: 'قِطٌّ', latin: 'Qiththun', indo: 'Kucing', emoji: '🐈' },
+            { id: 6, arabic: 'أَرْنَبٌ', latin: 'Arnabun', indo: 'Kelinci', emoji: '🐇' },
+            { id: 7, arabic: 'سَمَكَةٌ', latin: 'Samakatun', indo: 'Ikan', emoji: '🐟' },
+            { id: 8, arabic: 'بَطَّةٌ', latin: 'Baththatun', indo: 'Bebek', emoji: '🦆' }
+        ];
+
+        // 2. DATA KUIS (10 Soal Bervariasi)
+        const quizData = [
+            // 1. Pilihan Ganda Biasa
+            {
+                type: 'mc',
+                typeLabel: 'Pilihan Ganda',
+                question: 'Apa bahasa Arab dari "Kucing"? 🐈',
+                options: ['مَاعِزٌ', 'قِطٌّ', 'سَمَكَةٌ', 'أَرْنَبٌ'],
+                answer: 1,
+                explanation: 'Benar! "قِطٌّ" (Qiththun) artinya Kucing.'
+            },
+            // 2. Benar Salah
+            {
+                type: 'tf',
+                typeLabel: 'Benar / Salah',
+                question: 'Kata "دَجَاجَةٌ" (Dajaajatun) adalah bahasa Arab untuk Ayam Betina.',
+                answer: true,
+                explanation: 'Tepat sekali! "دَجَاجَةٌ" (Dajaajatun) adalah Ayam Betina.'
+            },
+            // 3. Pilihan Ganda Kompleks
+            {
+                type: 'mc_complex',
+                typeLabel: 'Pilihan Ganda Kompleks (Jawaban bisa lebih dari 1)',
+                question: 'Pilih semua hewan yang termasuk jenis unggas (burung/ayam/bebek) dari pilihan di bawah ini:',
+                options: ['طَيْرٌ (Burung)', 'أَرْنَبٌ (Kelinci)', 'بَطَّةٌ (Bebek)', 'مَاعِزٌ (Kambing)', 'دَجَاجَةٌ (Ayam)'],
+                answers: [0, 2, 4],
+                explanation: 'Benar! Burung, Bebek, dan Ayam adalah kelompok unggas (burung-burungan).'
+            },
+            // 4. Drag and Drop / Cocokkan
+            {
+                type: 'drag_drop',
+                typeLabel: 'Mencocokkan Gambar & Kata',
+                question: 'Pasangkan gambar hewan dengan bahasa Arabnya! (Sentuh gambar, lalu sentuh kotak kosong di sebelah kata Arabnya)',
+                pairs: [
+                    { emoji: '🐟', arabic: 'سَمَكَةٌ', id: 7 },
+                    { emoji: '🐐', arabic: 'مَاعِزٌ', id: 4 },
+                    { emoji: '🦢', arabic: 'إِوَزَّةٌ', id: 3 }
+                ],
+                explanation: 'Masya Allah, Hebat! سَمَكَةٌ (Ikan), مَاعِزٌ (Kambing), dan إِوَزَّةٌ (Angsa).'
+            },
+            // 5. Pilihan Ganda Biasa
+            {
+                type: 'mc',
+                typeLabel: 'Pilihan Ganda',
+                question: 'Hewan apakah yang suka melompat dan memakan wortel dalam bahasa Arab? 🥕',
+                options: ['أَرْنَبٌ', 'طَيْرٌ', 'بَطَّةٌ', 'إِوَزَّةٌ'],
+                answer: 0,
+                explanation: 'Masya Allah, Hebat! Hewan itu adalah kelinci, bahasa Arabnya "أَرْنَبٌ" (Arnabun).'
+            },
+            // 6. Benar Salah
+            {
+                type: 'tf',
+                typeLabel: 'Benar / Salah',
+                question: '"سَمَكَةٌ" (Samakatun) adalah hewan yang hidup di darat dan suka memakan rumput.',
+                answer: false,
+                explanation: 'Salah! "سَمَكَةٌ" (Samakatun) adalah Ikan, hewan yang hidup dan berenang di air.'
+            },
+            // 7. Pilihan Ganda Biasa
+            {
+                type: 'mc',
+                typeLabel: 'Pilihan Ganda',
+                question: 'Di desa Iloponu, masyarakat sering memelihara hewan ini. Bahasa Arab dari "Kambing" adalah...',
+                options: ['سَمَكَةٌ', 'دَجَاجَةٌ', 'قِطٌّ', 'مَاعِزٌ'],
+                answer: 3,
+                explanation: 'Benar! Kambing dalam bahasa Arab adalah "مَاعِزٌ" (Maa\'izun).'
+            },
+            // 8. Pilihan Ganda Kompleks
+            {
+                type: 'mc_complex',
+                typeLabel: 'Pilihan Ganda Kompleks (Jawaban bisa lebih dari 1)',
+                question: 'Pilih hewan-hewan yang umumnya suka berenang di air:',
+                options: ['سَمَكَةٌ (Ikan)', 'بَطَّةٌ (Bebek)', 'قِطٌّ (Kucing)', 'إِوَزَّةٌ (Angsa)'],
+                answers: [0, 1, 3],
+                explanation: 'Tepat! Ikan, Bebek, dan Angsa adalah hewan yang sangat identik dengan air.'
+            },
+            // 9. Drag and Drop / Cocokkan
+            {
+                type: 'drag_drop',
+                typeLabel: 'Mencocokkan Gambar & Kata',
+                question: 'Pasangkan hewan peliharaan ini dengan namanya yang tepat!',
+                pairs: [
+                    { emoji: '🐈', arabic: 'قِطٌّ', id: 5 },
+                    { emoji: '🐇', arabic: 'أَرْنَبٌ', id: 6 },
+                    { emoji: '🐦', arabic: 'طَيْرٌ', id: 1 }
+                ],
+                explanation: 'Luar biasa! Kamu sangat teliti memasangkan kata dan gambar hewan peliharaan.'
+            },
+            // 10. Benar Salah
+            {
+                type: 'tf',
+                typeLabel: 'Benar / Salah',
+                question: 'Jika "بَطَّةٌ" (Baththatun) adalah Bebek, maka "إِوَزَّةٌ" (Iwazzatun) adalah Angsa.',
+                answer: true,
+                explanation: 'Alhamdulillah, benar! "إِوَزَّةٌ" artinya Angsa. Sama-sama unggas air tapi bentuknya berbeda.'
+            }
+        ];
+
+        function switchTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Reset tab styling
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.classList.remove('border-yellow-400', 'bg-green-900');
+                btn.classList.add('border-transparent');
+            });
+
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            
+            // Highlight selected button
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('border-transparent');
+            activeBtn.classList.add('border-yellow-400', 'bg-green-900');
+
+            // Initialize specific tab logic if needed
+            if (tabId === 'bermain' && currentGameWord === null) {
+                initGame();
+            }
+        }
+
+        function renderFlashcards() {
+            const container = document.getElementById('flashcards-container');
+            container.innerHTML = '';
+            
+            vocabulary.forEach((item, index) => {
+                const cardHtml = `
+                    <div class="h-40 sm:h-48 flip-card animate-slide-up" style="animation-delay: ${index * 50}ms" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <span class="text-5xl sm:text-6xl mb-2 drop-shadow-md">${item.emoji}</span>
+                                <span class="arabic-text text-3xl sm:text-4xl font-bold text-green-700">${item.arabic}</span>
+                                <span class="text-xs text-gray-400 mt-1">Ketuk untuk membalik 👆</span>
+                            </div>
+                            <div class="flip-card-back">
+                                <span class="text-xl sm:text-2xl font-bold text-yellow-300 mb-1">${item.latin}</span>
+                                <span class="text-lg sm:text-xl font-medium">${item.indo}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+            });
+        }
+
+        let gameScore = 0;
+        let currentGameWord = null;
+        let currentOptions = [];
+        
+        // Quiz State Variables
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let studentName = '';
+        let studentClass = '';
+        
+        // Drag & Drop State Variables
+        let selectedDragItem = null;
+        let currentDragPairs = [];
+
+        function initGame() {
+            gameScore = 0;
+            updateGameScore();
+            nextGameRound();
+        }
+
+        function nextGameRound() {
+            // Pilih kata acak
+            const randomIndex = Math.floor(Math.random() * vocabulary.length);
+            currentGameWord = vocabulary[randomIndex];
+            
+            // Generate 3 random options salah + 1 benar
+            let options = [currentGameWord];
+            while (options.length < 4) {
+                const randomOpt = vocabulary[Math.floor(Math.random() * vocabulary.length)];
+                if (!options.find(o => o.id === randomOpt.id)) {
+                    options.push(randomOpt);
+                }
+            }
+            
+            // Shuffle options
+            options = options.sort(() => Math.random() - 0.5);
+            currentOptions = options;
+
+            // Render Game UI
+            const wordEl = document.getElementById('game-word-arabic');
+            wordEl.textContent = currentGameWord.arabic;
+            // animate word appearance
+            wordEl.classList.remove('animate-bounce-in');
+            void wordEl.offsetWidth; // trigger reflow
+            wordEl.classList.add('animate-bounce-in');
+
+            const optionsContainer = document.getElementById('game-options');
+            optionsContainer.innerHTML = '';
+            
+            options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'bg-white border-2 border-green-200 hover:border-green-500 rounded-xl p-4 sm:p-6 text-5xl sm:text-6xl shadow-sm hover:shadow-md transition-all transform hover:scale-105 active:scale-95';
+                btn.innerHTML = opt.emoji;
+                btn.onclick = () => checkGameAnswer(opt.id, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkGameAnswer(selectedId, btnElement) {
+            if (selectedId === currentGameWord.id) {
+                // Benar
+                btnElement.classList.add('bg-green-100', 'border-green-500', 'ring-4', 'ring-green-300');
+                gameScore += 10;
+                updateGameScore();
+                showModal('Ahsan! (Luar Biasa)', `Benar! ${currentGameWord.arabic} artinya ${currentGameWord.indo}.`, '🎉', 'Lanjut', nextGameRound, 'green');
+            } else {
+                // Salah
+                btnElement.classList.add('bg-red-50', 'border-red-400');
+                showModal('Ups, Coba Lagi!', `Gambar yang kamu pilih kurang tepat. Ayo perhatikan lagi tulisan Arabnya!`, '💡', 'Coba Lagi', null, 'red');
+            }
+        }
+
+        function updateGameScore() {
+            document.getElementById('game-score').textContent = gameScore;
+        }
+
+        /* --- LOGIKA KUIS BARU --- */
+
+        function startQuiz() {
+            // Validasi Input Nama & Kelas
+            const nameInput = document.getElementById('student-name').value.trim();
+            const classInput = document.getElementById('student-class').value;
+            const validationMsg = document.getElementById('quiz-validation-msg');
+
+            if (!nameInput || !classInput) {
+                validationMsg.classList.remove('hidden');
+                return;
+            }
+            
+            validationMsg.classList.add('hidden');
+            studentName = nameInput;
+            studentClass = classInput;
+
+            document.getElementById('quiz-intro').classList.add('hidden');
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            
+            currentQuizIndex = 0;
+            quizScore = 0;
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const q = quizData[currentQuizIndex];
+            document.getElementById('quiz-current').textContent = currentQuizIndex + 1;
+            document.getElementById('quiz-progress').style.width = `${((currentQuizIndex + 1) / quizData.length) * 100}%`;
+            
+            document.getElementById('quiz-question-type').textContent = q.typeLabel;
+            document.getElementById('quiz-question').textContent = q.question;
+            
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = ''; // Reset container
+            
+            // Render berdasarkan tipe soal
+            switch (q.type) {
+                case 'mc':
+                    renderMC(q, optionsContainer);
+                    break;
+                case 'tf':
+                    renderTF(q, optionsContainer);
+                    break;
+                case 'mc_complex':
+                    renderMCComplex(q, optionsContainer);
+                    break;
+                case 'drag_drop':
+                    renderDragDrop(q, optionsContainer);
+                    break;
+            }
+        }
+
+        // Tipe: Pilihan Ganda
+        function renderMC(q, container) {
+            q.options.forEach((opt, index) => {
+                const isArabic = /[\u0600-\u06FF]/.test(opt);
+                const textClass = isArabic ? 'arabic-text text-2xl font-bold' : 'text-lg font-medium';
+                
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl border-2 border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-colors ${textClass} text-gray-700 shadow-sm`;
+                btn.textContent = opt;
+                btn.onclick = () => {
+                    const isCorrect = index === q.answer;
+                    handleQuizResult(isCorrect, q.explanation);
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        // Tipe: Benar Salah
+        function renderTF(q, container) {
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-2 gap-4';
+
+            const btnTrue = document.createElement('button');
+            btnTrue.className = 'p-6 rounded-xl border-2 border-green-500 bg-green-50 text-green-700 text-xl font-bold hover:bg-green-100 shadow-sm transition-transform active:scale-95';
+            btnTrue.innerHTML = '✅ BENAR';
+            btnTrue.onclick = () => handleQuizResult(q.answer === true, q.explanation);
+
+            const btnFalse = document.createElement('button');
+            btnFalse.className = 'p-6 rounded-xl border-2 border-red-500 bg-red-50 text-red-700 text-xl font-bold hover:bg-red-100 shadow-sm transition-transform active:scale-95';
+            btnFalse.innerHTML = '❌ SALAH';
+            btnFalse.onclick = () => handleQuizResult(q.answer === false, q.explanation);
+
+            grid.appendChild(btnTrue);
+            grid.appendChild(btnFalse);
+            container.appendChild(grid);
+        }
+
+        // Tipe: Pilihan Ganda Kompleks
+        function renderMCComplex(q, container) {
+            const checklistContainer = document.createElement('div');
+            checklistContainer.className = 'space-y-3 mb-6';
+
+            q.options.forEach((opt, index) => {
+                const label = document.createElement('label');
+                label.className = 'flex items-center p-4 rounded-xl border-2 border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = index;
+                checkbox.className = 'w-6 h-6 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500';
+                
+                const text = document.createElement('span');
+                text.className = 'ml-4 text-lg font-medium text-gray-700';
+                text.textContent = opt;
+
+                label.appendChild(checkbox);
+                label.appendChild(text);
+                checklistContainer.appendChild(label);
+            });
+
+            const submitBtn = document.createElement('button');
+            submitBtn.className = 'w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-md transition-colors';
+            submitBtn.textContent = 'Konfirmasi Jawaban';
+            submitBtn.onclick = () => {
+                const checkedBoxes = Array.from(checklistContainer.querySelectorAll('input:checked')).map(cb => parseInt(cb.value));
+                // Cek apakah array jawaban persis sama (diurutkan)
+                const isCorrect = JSON.stringify(checkedBoxes.sort()) === JSON.stringify(q.answers.sort());
+                handleQuizResult(isCorrect, q.explanation);
+            };
+
+            container.appendChild(checklistContainer);
+            container.appendChild(submitBtn);
+        }
+
+        // Tipe: Drag & Drop (Tap to Match)
+        function renderDragDrop(q, container) {
+            currentDragPairs = [...q.pairs].sort(() => Math.random() - 0.5); // Acak untuk dropzone
+            const draggables = [...q.pairs].sort(() => Math.random() - 0.5); // Acak untuk opsi emoji
+
+            // Area Sumber Emoji (Draggables)
+            const poolArea = document.createElement('div');
+            poolArea.id = 'drag-pool';
+            poolArea.className = 'flex justify-center gap-4 mb-8 p-4 bg-gray-50 rounded-xl border-2 border-dashed border-gray-300 min-h-[80px]';
+            
+            draggables.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'draggable-item text-5xl bg-white p-2 rounded-full shadow-md border-2 border-gray-100';
+                el.textContent = item.emoji;
+                el.dataset.id = item.id;
+                el.onclick = () => selectDragItem(el);
+                poolArea.appendChild(el);
+            });
+
+            // Area Target (Dropzones)
+            const targetArea = document.createElement('div');
+            targetArea.className = 'space-y-4 mb-6';
+
+            currentDragPairs.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'flex justify-between items-center bg-blue-50 p-3 rounded-xl border border-blue-100';
+                
+                const label = document.createElement('span');
+                label.className = 'arabic-text text-3xl font-bold text-blue-800 ml-2';
+                label.textContent = item.arabic;
+
+                const dropzone = document.createElement('div');
+                dropzone.className = 'dropzone';
+                dropzone.dataset.expected = item.id;
+                dropzone.onclick = () => dropIntoZone(dropzone);
+
+                row.appendChild(label);
+                row.appendChild(dropzone);
+                targetArea.appendChild(row);
+            });
+
+            const submitBtn = document.createElement('button');
+            submitBtn.className = 'w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-md transition-colors';
+            submitBtn.textContent = 'Cek Pasangan';
+            submitBtn.onclick = () => validateDragDrop();
+
+            container.appendChild(poolArea);
+            container.appendChild(targetArea);
+            container.appendChild(submitBtn);
+        }
+
+        // Logika Tap-to-Match (Drag Drop Alternative)
+        function selectDragItem(element) {
+            if(selectedDragItem) {
+                selectedDragItem.classList.remove('selected-drag');
+            }
+            // Jika mengklik elemen yang sama, batalkan pilihan
+            if (selectedDragItem === element) {
+                selectedDragItem = null;
+                return;
+            }
+            selectedDragItem = element;
+            selectedDragItem.classList.add('selected-drag');
+        }
+
+        function dropIntoZone(zoneElement) {
+            // Jika ada item yang sedang dipilih dari pool/zona lain
+            if (selectedDragItem) {
+                // Jika zona sudah ada isinya, kembalikan isinya ke pool
+                if (zoneElement.children.length > 0) {
+                    const existingItem = zoneElement.children[0];
+                    document.getElementById('drag-pool').appendChild(existingItem);
+                }
+                
+                zoneElement.appendChild(selectedDragItem);
+                selectedDragItem.classList.remove('selected-drag');
+                zoneElement.classList.add('filled');
+                selectedDragItem = null;
+            } 
+            // Jika tidak ada yg dipilih, tapi zona diklik dan ada isinya (keluarkan item)
+            else if (zoneElement.children.length > 0) {
+                const item = zoneElement.children[0];
+                document.getElementById('drag-pool').appendChild(item);
+                zoneElement.classList.remove('filled');
+            }
+        }
+
+        function validateDragDrop() {
+            const zones = document.querySelectorAll('.dropzone');
+            let isAllCorrect = true;
+            let filledCount = 0;
+
+            zones.forEach(zone => {
+                if (zone.children.length > 0) {
+                    filledCount++;
+                    const childId = zone.children[0].dataset.id;
+                    if (childId !== zone.dataset.expected) {
+                        isAllCorrect = false;
+                    }
+                } else {
+                    isAllCorrect = false;
+                }
+            });
+
+            if (filledCount < zones.length) {
+                showModal('Belum Lengkap!', 'Harap pasangkan semua gambar ke dalam kotak sebelum mengecek jawaban.', '⚠️', 'Oke', null, 'blue');
+                return;
+            }
+
+            const q = quizData[currentQuizIndex];
+            handleQuizResult(isAllCorrect, q.explanation);
+        }
+
+        // Global Quiz Result Handler
+        function handleQuizResult(isCorrect, explanation) {
+            if (isCorrect) {
+                quizScore += 10; // 10 soal x 10 poin = 100
+                showModal('Benar Sekali!', explanation, '✅', 'Soal Selanjutnya', nextQuizQuestion, 'blue');
+            } else {
+                showModal('Kurang Tepat', explanation, '❌', 'Soal Selanjutnya', nextQuizQuestion, 'red');
+            }
+        }
+
+        function nextQuizQuestion() {
+            currentQuizIndex++;
+            if (currentQuizIndex < quizData.length) {
+                renderQuizQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function finishQuiz() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            
+            // Set Identitas
+            document.getElementById('res-name').textContent = studentName;
+            document.getElementById('res-class').textContent = studentClass;
+
+            const scoreEl = document.getElementById('result-score');
+            scoreEl.textContent = quizScore;
+            
+            let msg = '';
+            let emoji = '';
+            if (quizScore === 100) {
+                msg = 'Mumtaz! Kamu sangat menguasai kosakata ini. Guru pasti bangga!';
+                emoji = '🏆';
+                scoreEl.className = 'text-7xl font-black text-green-600 mb-6 drop-shadow-sm';
+            } else if (quizScore >= 70) {
+                msg = 'Jayyid (Bagus)! Terus berlatih agar nilaimu semakin sempurna.';
+                emoji = '🌟';
+                scoreEl.className = 'text-7xl font-black text-yellow-500 mb-6 drop-shadow-sm';
+            } else {
+                msg = 'Jangan menyerah! Ayo baca kembali materinya dan coba kuisnya lagi.';
+                emoji = '💪';
+                scoreEl.className = 'text-7xl font-black text-red-500 mb-6 drop-shadow-sm';
+            }
+            
+            document.getElementById('result-message').textContent = msg;
+            document.getElementById('result-emoji').textContent = emoji;
+
+            // Simpan Data Rekap Murid
+            saveStudentRecord(studentName, studentClass, quizScore);
+        }
+
+        function saveStudentRecord(name, cls, score) {
+            let records = JSON.parse(localStorage.getItem('mpi_records_arab') || '[]');
+            // Cek jika siswa dengan nama dan kelas yang sama sudah ada
+            let existingIdx = records.findIndex(r => r.name.toLowerCase() === name.toLowerCase() && r.cls === cls);
+            
+            let dateStr = new Date().toLocaleDateString('id-ID');
+            if (existingIdx >= 0) {
+                // Update skor jika lebih tinggi dari sebelumnya
+                if (score > records[existingIdx].score) {
+                    records[existingIdx].score = score;
+                    records[existingIdx].date = dateStr;
+                }
+            } else {
+                records.push({ name: name, cls: cls, score: score, date: dateStr });
+            }
+            localStorage.setItem('mpi_records_arab', JSON.stringify(records));
+        }
+
+        function resetQuiz() {
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-intro').classList.remove('hidden');
+            // Form tidak direset agar siswa tidak perlu mengetik ulang namanya jika ingin mengulang
+        }
+
+        let modalCallback = null;
+
+        function showModal(title, message, icon, btnText, callback = null, colorScheme = 'green') {
+            const modal = document.getElementById('feedback-modal');
+            const card = document.getElementById('feedback-card');
+            const btn = document.getElementById('feedback-btn');
+            
+            document.getElementById('feedback-title').textContent = title;
+            document.getElementById('feedback-message').textContent = message;
+            document.getElementById('feedback-icon').textContent = icon;
+            btn.textContent = btnText;
+            
+            // Dynamic coloring based on success/error/info
+            btn.className = 'w-full font-bold py-3 px-4 rounded-xl transition-colors text-white mt-4 ';
+            if (colorScheme === 'green') {
+                btn.className += 'bg-green-600 hover:bg-green-700';
+                document.getElementById('feedback-title').className = 'text-2xl font-bold mb-2 text-green-700';
+            } else if (colorScheme === 'red') {
+                btn.className += 'bg-red-500 hover:bg-red-600';
+                document.getElementById('feedback-title').className = 'text-2xl font-bold mb-2 text-red-600';
+            } else {
+                btn.className += 'bg-blue-600 hover:bg-blue-700';
+                document.getElementById('feedback-title').className = 'text-2xl font-bold mb-2 text-blue-700';
+            }
+
+            modalCallback = callback;
+            
+            modal.classList.remove('hidden');
+            // Trigger animation
+            setTimeout(() => {
+                card.classList.remove('scale-90');
+                card.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('feedback-modal');
+            const card = document.getElementById('feedback-card');
+            
+            card.classList.remove('scale-100');
+            card.classList.add('scale-90');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                if (modalCallback) {
+                    modalCallback();
+                    modalCallback = null;
+                }
+            }, 200); // match transition duration
+        }
+
+        function startApp(targetTab) {
+            document.getElementById('splash-screen').classList.add('hidden');
+            switchTab(targetTab);
+        }
+
+        function openInfoModal(type) {
+            const modal = document.getElementById('info-modal');
+            const card = document.getElementById('info-card');
+            const titleEl = document.getElementById('info-title');
+            const iconEl = document.getElementById('info-icon');
+            const contentEl = document.getElementById('info-content');
+            
+            let title = '';
+            let icon = '';
+            let content = '';
+
+            switch(type) {
+                case 'pengembang':
+                    title = 'Informasi Pengembang';
+                    icon = '🧕';
+                    content = `
+                        <div class="text-center space-y-3">
+                            <h4 class="text-2xl font-bold text-gray-800">Uswatun Hasan, S.Pd</h4>
+                            <p class="text-green-600 font-semibold text-lg">Guru & Pengembang Media</p>
+                            <p class="text-gray-600 bg-gray-50 py-3 rounded-lg border border-gray-200 font-medium shadow-sm">MIS Muhammadiyah Iloponu<br>Kecamatan Tibawa, Provinsi Gorontalo</p>
+                            <p class="text-sm text-gray-500 mt-4 italic leading-relaxed">"Mendidik dengan hati, berinovasi untuk kemajuan madrasah dan anak negeri."</p>
+                        </div>`;
+                    break;
+                case 'tujuan':
+                    title = 'Tujuan Pembelajaran';
+                    icon = '🎯';
+                    content = `
+                        <ul class="list-none space-y-4">
+                            <li class="flex items-start">
+                                <span class="text-green-600 mr-3 text-xl">✅</span>
+                                <span class="text-gray-700">Peserta didik mampu <b>melafalkan</b> 8 mufradat nama-nama hewan (طَيْرٌ، دَجَاجَةٌ، إِوَزَّةٌ، مَاعِزٌ، قِطٌّ، أَرْنَبٌ، سَمَكَةٌ، بَطَّةٌ) dengan benar dan fasih.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-600 mr-3 text-xl">✅</span>
+                                <span class="text-gray-700">Peserta didik mampu <b>mengidentifikasi</b> dan menghubungkan gambar hewan dengan kosakata Bahasa Arabnya.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-600 mr-3 text-xl">✅</span>
+                                <span class="text-gray-700">Meningkatkan kecintaan peserta didik terhadap pembelajaran Bahasa Arab melalui media interaktif.</span>
+                            </li>
+                        </ul>`;
+                    break;
+                case 'konteks':
+                    title = 'Konteks Lokal Pembelajaran';
+                    icon = '🌴';
+                    content = `
+                        <p class="mb-4">Materi dan desain pembelajaran ini diintegrasikan dengan konteks lingkungan pedesaan <b>MIS Muhammadiyah Iloponu, Kecamatan Tibawa</b>.</p>
+                        <p>Hewan-hewan yang dipilih seperti kambing (مَاعِزٌ), ayam (دَجَاجَةٌ), dan kucing (قِطٌّ) adalah jenis hewan yang sangat dekat dan sering dijumpai oleh murid-murid di kehidupan sehari-hari di desa, sehingga pembelajaran menjadi jauh lebih bermakna dan mudah diserap.</p>`;
+                    break;
+                case 'referensi':
+                    title = 'Referensi Materi';
+                    icon = '📚';
+                    content = `
+                        <ul class="list-disc pl-5 space-y-3 text-gray-700">
+                            <li>Buku Siswa Bahasa Arab Madrasah Ibtidaiyah Kelas III, Kementerian Agama RI.</li>
+                            <li>Keputusan Menteri Agama (KMA) Nomor 183 Tahun 2019 tentang Kurikulum PAI dan Bahasa Arab pada Madrasah.</li>
+                            <li>Pendekatan Pembelajaran Kontekstual (CTL) Terintegrasi Lingkungan Lokal.</li>
+                        </ul>`;
+                    break;
+                case 'data_murid':
+                case 'guru':
+                    title = type === 'guru' ? 'Panel Guru (Rekapitulasi)' : 'Data Hasil Belajar Murid';
+                    icon = type === 'guru' ? '👨‍🏫' : '👥';
+                    
+                    let records = JSON.parse(localStorage.getItem('mpi_records_arab') || '[]');
+                    // Urutkan dari skor tertinggi (Ranking)
+                    records.sort((a, b) => b.score - a.score);
+
+                    if(records.length === 0) {
+                        content = '<div class="text-center py-10"><span class="text-6xl block mb-4">📭</span><p class="text-gray-500 font-medium">Belum ada data murid yang menyelesaikan kuis.</p></div>';
+                    } else {
+                        let rows = records.map((r, i) => `
+                            <tr class="border-b hover:bg-green-50 transition-colors">
+                                <td class="py-3 px-3 text-center text-sm font-semibold">${i+1}</td>
+                                <td class="py-3 px-3 text-sm font-bold text-gray-800">${r.name}</td>
+                                <td class="py-3 px-3 text-sm text-center text-gray-600">${r.cls}</td>
+                                <td class="py-3 px-3 text-sm font-bold text-center ${r.score >= 70 ? 'text-green-600' : 'text-red-500'}">${r.score}</td>
+                            </tr>
+                        `).join('');
+                        content = `
+                            <div class="overflow-x-auto rounded-xl border-2 border-green-100 shadow-sm">
+                                <table class="min-w-full bg-white text-left whitespace-nowrap">
+                                    <thead class="bg-green-100 text-green-800 border-b-2 border-green-200">
+                                        <tr>
+                                            <th class="py-3 px-3 text-sm text-center">No</th>
+                                            <th class="py-3 px-3 text-sm">Nama Lengkap</th>
+                                            <th class="py-3 px-3 text-sm text-center">Kelas</th>
+                                            <th class="py-3 px-3 text-sm text-center">Skor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>${rows}</tbody>
+                                </table>
+                            </div>
+                            ${type === 'guru' ? '<button onclick="clearData()" class="mt-5 w-full py-2 text-sm text-red-500 border border-red-200 rounded-lg hover:bg-red-50 font-semibold transition-colors">🗑️ Hapus Semua Data (Reset)</button>' : ''}
+                        `;
+                    }
+                    break;
+            }
+
+            titleEl.textContent = title;
+            iconEl.textContent = icon;
+            contentEl.innerHTML = content;
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                card.classList.remove('scale-90');
+                card.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeInfoModal() {
+            const modal = document.getElementById('info-modal');
+            const card = document.getElementById('info-card');
+            
+            card.classList.remove('scale-100');
+            card.classList.add('scale-90');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
+        function clearData() {
+            if(confirm('Apakah Anda yakin ingin MENGHAPUS SEMUA data rekapitulasi nilai murid? Data tidak bisa dikembalikan.')) {
+                localStorage.removeItem('mpi_records_arab');
+                openInfoModal('guru'); // Refresh modal konten
+            }
+        }
+
+        // Initialize App on Load
+        window.onload = function() {
+            renderFlashcards();
+        };
+
+    </script>
+</body>
+</html>
