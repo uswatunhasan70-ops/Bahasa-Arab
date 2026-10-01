@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Bahasa Arab: Nama-Nama Hewan (Kelas 3 MI)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #065F46; /* Hijau Islami / Emerald 800 */
+            --secondary: #D97706; /* Emas / Amber 600 */
+            --bg-color: #ECFDF5; /* Emerald 50 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#6EE7B7 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: #1F2937;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            direction: rtl;
+        }
+        
+        /* Animasi Transisi Halaman */
+        .page-enter {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Splash Screen Animation */
+        #splash-screen {
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        #splash-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Running Text / Marquee Custom CSS */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            background: #047857;
+        }
+        .marquee-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 28s linear infinite;
+        }
+        .marquee-container:hover .marquee-content {
+            animation-play-state: paused;
+        }
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+
+        /* Styling Flashcard */
+        .flashcard {
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 2px solid #34D399; /* Emerald 400 */
+        }
+        .flashcard-front {
+            background-color: white;
+        }
+        .flashcard-back {
+            background-color: var(--primary);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        /* Item Matching & Game */
+        .match-item {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .match-item.selected {
+            ring: 4px;
+            ring-color: var(--secondary);
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(217, 119, 6, 0.4);
+            border-color: var(--secondary);
+        }
+        .match-item.matched {
+            opacity: 0.5;
+            pointer-events: none;
+            background-color: #D1FAE5; /* Emerald 100 */
+            border-color: var(--primary);
+        }
+        
+        /* Drag & Drop Styles */
+        .drag-item {
+            cursor: grab;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        .drag-item:active {
+            cursor: grabbing;
+        }
+        .drag-item.selected-item {
+            outline: 3px solid #D97706;
+            background-color: #FEF3C7;
+        }
+        .drop-zone {
+            transition: all 0.2s ease;
+            min-height: 80px;
+        }
+        .drop-zone.drag-over {
+            background-color: #D1FAE5;
+            border-color: #059669;
+            transform: scale(1.02);
+        }
+        
+        /* Custom Modal */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="fixed inset-0 z-50 bg-gradient-to-br from-[#065F46] via-[#047857] to-[#022c22] flex flex-col items-center justify-center text-white p-6">
+        <div class="text-center max-w-lg mx-auto transform transition-all animate-bounce duration-1000">
+            <span class="text-7xl md:text-8xl block mb-4">🕌</span>
+        </div>
+        <div class="text-center max-w-xl mx-auto space-y-4">
+            <span class="bg-amber-400 text-emerald-950 font-extrabold text-xs md:text-sm uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">
+                Media Pembelajaran Interaktif (MPI)
+            </span>
+            <h1 class="text-4xl md:text-5xl font-black arabic-text text-amber-300 leading-relaxed">
+                أَسْمَاءُ الْحَيَوَانَاتِ
+            </h1>
+            <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-emerald-100">
+                Bahasa Arab Kelas III MI
+            </h2>
+            <p class="text-emerald-200 text-sm md:text-base font-medium">
+                MIS Muhammadiyah Iloponu • Provinsi Gorontalo
+            </p>
+            
+            <div class="pt-6">
+                <button onclick="dismissSplash()" class="bg-gradient-to-r from-amber-500 to-amber-600 text-emerald-950 font-black text-lg px-8 py-4 rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center space-x-3 mx-auto border-2 border-amber-300">
+                    <span>BUKA MEDIA PEMBELAJARAN</span>
+                    <span class="text-2xl">🚀</span>
+                </button>
+            </div>
+            <p class="text-xs text-emerald-300/80 pt-4">Dikembangkan oleh: Uswatun Hasan, S.Pd</p>
+        </div>
+    </div>
+
+    <header class="bg-[#065F46] text-white shadow-lg sticky top-0 z-20">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <button onclick="navTo('home')" class="text-2xl hover:scale-110 transition" title="Ke Cover Utama">🕌</button>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight text-[#FBBF24]">Madrasah Ceria</h1>
+                    <p class="text-xs text-emerald-100">Bahasa Arab Kelas III MI Iloponu</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="openModal('modal-info')" class="px-3 py-1.5 bg-emerald-800 text-amber-300 text-xs font-bold rounded-xl hover:bg-emerald-700 transition flex items-center space-x-1 border border-emerald-600">
+                    <span>ℹ️ Informasi</span>
+                </button>
+                <button onclick="navTo('home')" class="p-2 bg-emerald-800 rounded-full hover:bg-emerald-700 transition" title="Ke Beranda">
+                    🏠
+                </button>
+            </div>
+        </div>
+
+        <!-- Animasi Teks Berjalan (Marquee) -->
+        <div class="marquee-container text-amber-200 text-xs md:text-sm font-semibold py-2 border-t border-emerald-700 shadow-inner">
+            <div class="marquee-content">
+                📢 <span class="text-white font-bold">INFO IMPORTANT:</span> Selamat Datang di MPI Bahasa Arab Kelas III MI (Fase B) • Topic: <span class="arabic-text text-amber-300 text-base">أَسْمَاءُ الْحَيَوَانَاتِ</span> (Nama-nama Hewan) • Pengembang: <span class="text-amber-300 font-bold">Uswatun Hasan, S.Pd</span> (MIS Muhammadiyah Iloponu - Kanwil Kemenag Prov. Gorontalo) • <span class="text-emerald-200">Petunjuk Pembelajaran:</span> 1. Pelajari Materi Flashcard ➔ 2. Mainkan Game Pasangkan Kata ➔ 3. Selesaikan Kuis Evaluasi 10 Soal Bervariasi • Semangat Belajar Anak-Anak Sholeh & Sholehah! 🌟
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-4xl mx-auto w-full p-4 relative">
+
+        <!-- COVER SCREEN / PAGE HOME -->
+        <section id="page-home" class="page-enter flex flex-col items-center justify-center py-4 text-center">
+            
+            <!-- Hero Cover Card -->
+            <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl border-t-8 border-[#065F46] max-w-2xl w-full relative overflow-hidden mb-6">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl select-none">🌴</div>
+                <div class="inline-block bg-amber-100 text-amber-800 text-xs font-bold px-4 py-1.5 rounded-full mb-3 border border-amber-300">
+                    Pesisir & Agraris Gorontalo Edition 🏖️🐐
+                </div>
+                
+                <div class="text-6xl my-2">🏝️🐐🐦</div>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-[#065F46] mb-2 arabic-text leading-relaxed">أَسْمَاءُ الْحَيَوَانَاتِ</h2>
+                <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-2">Nama-Nama Hewan dalam Bahasa Arab</h3>
+                <p class="text-emerald-800 text-xs md:text-sm font-semibold mb-4">Kelas III Madrasah Ibtidaiyah (Fase B)</p>
+
+                <p class="text-gray-600 mb-6 text-sm md:text-base leading-relaxed max-w-lg mx-auto">
+                    Assalamu'alaikum wr. wb.! Selamat datang di Modul Pembelajaran Interaktif. 
+                    Mari kita jelajahi dan hafal 8 nama hewan sekitar kita dalam bahasa Arab dengan menyenangkan!
+                </p>
+
+                <!-- Tombol Utama Mulai Belajar -->
+                <div class="mb-8">
+                    <button onclick="navTo('learn')" class="w-full sm:w-auto bg-gradient-to-r from-[#065F46] to-[#047857] text-white font-extrabold text-lg px-10 py-4 rounded-2xl shadow-xl hover:bg-emerald-800 hover:scale-105 active:scale-95 transition-all border-2 border-emerald-400 flex items-center justify-center space-x-3 mx-auto">
+                        <span>🚀 MULAI BELAJAR SEKARANG</span>
+                    </button>
+                </div>
+
+                <!-- Fast Menu Modules -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-gray-100">
+                    <button onclick="navTo('learn')" class="flex flex-col items-center p-3 bg-emerald-50 rounded-2xl border-2 border-emerald-200 hover:bg-emerald-100 transition group">
+                        <span class="text-3xl mb-1 group-hover:scale-110 transition">📖</span>
+                        <span class="font-bold text-emerald-900 text-xs md:text-sm">1. Flashcard Visual</span>
+                    </button>
+                    <button onclick="navTo('play')" class="flex flex-col items-center p-3 bg-amber-50 rounded-2xl border-2 border-amber-200 hover:bg-amber-100 transition group">
+                        <span class="text-3xl mb-1 group-hover:scale-110 transition">🧩</span>
+                        <span class="font-bold text-amber-800 text-xs md:text-sm">2. Game Pasangkan</span>
+                    </button>
+                    <button onclick="openStudentModal()" class="flex flex-col items-center p-3 bg-blue-50 rounded-2xl border-2 border-blue-200 hover:bg-blue-100 transition group">
+                        <span class="text-3xl mb-1 group-hover:scale-110 transition">📝</span>
+                        <span class="font-bold text-blue-900 text-xs md:text-sm">3. Kuis Evaluasi (10 Soal)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Information Buttons (Informasi Pengembang, Tujuan, Referensi) -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl w-full">
+                <button onclick="openModal('modal-goals')" class="p-4 bg-white rounded-2xl shadow-md border border-emerald-100 hover:border-emerald-400 transition text-left flex items-center space-x-3">
+                    <span class="text-3xl">🎯</span>
+                    <div>
+                        <h4 class="font-bold text-gray-800 text-sm">Tujuan Belajar</h4>
+                        <p class="text-xs text-gray-500">Capaian & Indikator</p>
+                    </div>
+                </button>
+                <button onclick="openModal('modal-dev')" class="p-4 bg-white rounded-2xl shadow-md border border-emerald-100 hover:border-emerald-400 transition text-left flex items-center space-x-3">
+                    <span class="text-3xl">👨‍🏫</span>
+                    <div>
+                        <h4 class="font-bold text-gray-800 text-sm">Pengembang</h4>
+                        <p class="text-xs text-gray-500">Profil & Instansi</p>
+                    </div>
+                </button>
+                <button onclick="openModal('modal-refs')" class="p-4 bg-white rounded-2xl shadow-md border border-emerald-100 hover:border-emerald-400 transition text-left flex items-center space-x-3">
+                    <span class="text-3xl">📚</span>
+                    <div>
+                        <h4 class="font-bold text-gray-800 text-sm">Referensi</h4>
+                        <p class="text-xs text-gray-500">Kurikulum & Buku</p>
+                    </div>
+                </button>
+            </div>
+        </section>
+
+        <section id="page-learn" class="hidden page-enter w-full">
+            <div class="mb-6 flex justify-between items-end">
+                <div>
+                    <h2 class="text-2xl font-bold text-[#065F46]">Materi Eksplorasi Flashcard</h2>
+                    <p class="text-gray-600 text-sm mt-1">Sentuh kartu untuk membalik kata Bahasa Arab dan artinya!</p>
+                </div>
+                <div class="text-3xl">📖</div>
+            </div>
+
+            <div id="flashcard-container" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[160px]">
+                <!-- Cards disisipkan melalui JS -->
+            </div>
+
+            <div class="mt-8 text-center">
+                <button onclick="navTo('play')" class="bg-[#D97706] text-white px-8 py-3 rounded-full font-bold text-lg shadow-lg hover:bg-amber-500 transition">
+                    Lanjut Bermain Pasangkan ➡️
+                </button>
+            </div>
+        </section>
+
+        <section id="page-play" class="hidden page-enter w-full">
+            <div class="mb-4">
+                <h2 class="text-2xl font-bold text-[#065F46]">Latihan Pasangkan Kata!</h2>
+                <p class="text-gray-600 text-sm mt-1 bg-white p-3 rounded-lg border-l-4 border-amber-500 shadow-sm">
+                    <strong>Cara Main:</strong> Sentuh gambar hewan di sebelah kiri, lalu pilih kata Bahasa Arab yang sesuai di sebelah kanan.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 md:gap-8 mt-6">
+                <div class="flex flex-col space-y-3" id="game-emoji-col"></div>
+                <div class="flex flex-col space-y-3" id="game-word-col"></div>
+            </div>
+
+            <div class="mt-8 text-center" id="game-finish-btn" style="display: none;">
+                <h3 class="text-xl font-bold text-emerald-600 mb-4">Hebat! Kamu berhasil memasangkan semua hewan! 🎉</h3>
+                <button onclick="openStudentModal()" class="bg-[#065F46] text-white px-8 py-3 rounded-full font-bold text-lg shadow-lg hover:bg-emerald-700 transition">
+                    Mulai Kuis Evaluasi 📝
+                </button>
+            </div>
+        </section>
+
+        <section id="page-quiz" class="hidden page-enter w-full max-w-2xl mx-auto">
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-emerald-100">
+                <!-- Header Kuis dengan Identitas Siswa -->
+                <div class="bg-[#065F46] text-white p-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-lg">👤</span>
+                            <div>
+                                <p id="quiz-student-name" class="font-bold text-amber-300 text-sm md:text-base">Nama Siswa</p>
+                                <p id="quiz-student-class" class="text-xs text-emerald-100">Kelas 3</p>
+                            </div>
+                        </div>
+                        <span id="quiz-progress" class="bg-emerald-800 px-3 py-1 rounded-full text-xs md:text-sm font-bold border border-emerald-600">
+                            Soal 1 / 10
+                        </span>
+                    </div>
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-emerald-900 rounded-full h-2.5 overflow-hidden">
+                        <div id="quiz-progress-bar" class="bg-amber-400 h-2.5 rounded-full transition-all duration-300" style="width: 10%;"></div>
+                    </div>
+                </div>
+                
+                <!-- Area Pertanyaan -->
+                <div class="p-6 md:p-8">
+                    <!-- Badge Jenis Soal -->
+                    <div class="mb-3">
+                        <span id="question-type-badge" class="inline-block bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                            Pilihan Ganda
+                        </span>
+                    </div>
+
+                    <h3 id="question-text" class="text-lg md:text-xl font-bold text-gray-800 mb-6 leading-relaxed">
+                        Pertanyaan memuat...
+                    </h3>
+                    
+                    <!-- Dynamic Answer Render Container -->
+                    <div id="quiz-interactive-area" class="min-h-[180px]">
+                        <!-- Elemen-elemen jawaban interaktif digenerate di sini -->
+                    </div>
+
+                    <!-- Action Button -->
+                    <div class="mt-6 pt-4 border-t border-gray-100 flex justify-end">
+                        <button id="submit-answer-btn" onclick="submitCurrentAnswer()" class="bg-[#065F46] text-white px-6 py-3 rounded-xl font-bold text-base hover:bg-emerald-700 transition flex items-center space-x-2 shadow-md">
+                            <span>Jawab & Lanjut</span>
+                            <span>➡️</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-result" class="hidden page-enter w-full max-w-2xl mx-auto">
+            <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl border-t-4 border-[#065F46]">
+                <div class="text-center">
+                    <div class="text-6xl mb-2" id="result-icon">🏆</div>
+                    <h2 class="text-3xl font-extrabold text-gray-800 mb-1">Hasil Kuis Evaluasi</h2>
+                    <p class="text-gray-500 text-sm mb-6">Modul Bahasa Arab Kelas III MI</p>
+                </div>
+
+                <!-- Kartu Identitas & Skor -->
+                <div class="bg-emerald-50 rounded-2xl p-5 border-2 border-emerald-200 mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="text-center md:text-left">
+                        <p class="text-xs uppercase text-emerald-700 font-bold tracking-wider">Identitas Siswa</p>
+                        <h4 id="result-name" class="text-xl font-extrabold text-gray-800">Nama Siswa</h4>
+                        <p id="result-class" class="text-emerald-700 font-medium text-sm">Kelas 3 A</p>
+                    </div>
+                    <div class="bg-white px-6 py-3 rounded-2xl shadow-sm border border-emerald-300 text-center">
+                        <span class="block text-xs font-bold text-gray-500 uppercase">Nilai Akhir</span>
+                        <span id="final-score" class="text-5xl font-black text-[#065F46]">100</span>
+                    </div>
+                </div>
+
+                <!-- Status Penyimpanan Database -->
+                <div id="save-status-card" class="bg-blue-50 rounded-2xl p-4 border-2 border-blue-200 mb-6 flex items-center space-x-3 transition-all duration-300">
+                    <span id="save-spinner" class="animate-spin text-3xl inline-block">⏳</span>
+                    <div>
+                        <h4 class="font-bold text-blue-800 text-sm" id="save-status-title">Menyimpan ke Database...</h4>
+                        <p class="text-xs text-blue-600" id="save-status-desc">Mohon tunggu sebentar, jangan tutup halaman ini.</p>
+                    </div>
+                </div>
+
+                <!-- Rekap Pembahasan Singkat -->
+                <div class="mb-6">
+                    <h4 class="font-bold text-gray-800 mb-3 flex items-center text-base">
+                        <span>📋 Ringkasan Jawaban</span>
+                    </h4>
+                    <div id="quiz-summary-list" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+                        <!-- List rekap akan di-generate via JS -->
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-3">
+                    <button onclick="navTo('home')" class="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-200 transition">
+                        🏠 Kembali Beranda
+                    </button>
+                    <button onclick="openStudentModal()" class="w-full bg-[#065F46] text-white py-3 rounded-xl font-bold hover:bg-emerald-700 transition">
+                        🔄 Ulangi Kuis
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Informasi Pengembang -->
+    <div id="modal-dev" class="fixed inset-0 z-50 flex items-center justify-center modal-overlay hidden px-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden p-6 border-t-8 border-[#065F46]">
+            <div class="text-center mb-4">
+                <div class="relative inline-block mb-2">
+                    <a href="https://freeimage.host/i/na4yDpp" target="_blank" rel="noopener noreferrer" title="Lihat Foto Profil Pengembang">
+                        <img src="https://iili.io/na4yDpp.md.jpg" alt="Foto Uswatun Hasan, S.Pd" class="w-28 h-28 rounded-full border-4 border-[#065F46] shadow-lg object-cover mx-auto hover:scale-105 transition-transform" onerror="this.onerror=null; this.src='https://placehold.co/120x120/065F46/FFFFFF?text=Pengembang';">
+                    </a>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800">Informasi Pengembang</h3>
+                <p class="text-xs text-gray-500">Penyusun Media Pembelajaran Interaktif</p>
+            </div>
+            
+            <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-200 space-y-3 mb-6 text-sm">
+                <div>
+                    <span class="block text-xs text-emerald-700 font-bold uppercase">Nama Pengembang</span>
+                    <p class="text-base font-extrabold text-gray-800">Uswatun Hasan, S.Pd</p>
+                </div>
+                <div>
+                    <span class="block text-xs text-emerald-700 font-bold uppercase">Instansi Unit Kerja</span>
+                    <p class="text-sm font-semibold text-gray-800">MIS Muhammadiyah Iloponu</p>
+                    <p class="text-xs text-gray-600">Kanwil Kementerian Agama Prov. Gorontalo</p>
+                </div>
+                <div>
+                    <span class="block text-xs text-emerald-700 font-bold uppercase">Mata Pelajaran & Sasaran</span>
+                    <p class="text-sm font-medium text-gray-800">Bahasa Arab - Kelas III MI (Fase B)</p>
+                </div>
+            </div>
+
+            <button onclick="closeModal('modal-dev')" class="w-full bg-[#065F46] text-white font-bold py-3 rounded-xl hover:bg-emerald-700 transition">
+                Tutup
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal Tujuan Pembelajaran -->
+    <div id="modal-goals" class="fixed inset-0 z-50 flex items-center justify-center modal-overlay hidden px-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden p-6 border-t-8 border-[#065F46]">
+            <div class="text-center mb-4">
+                <span class="text-5xl block mb-2">🎯</span>
+                <h3 class="text-2xl font-bold text-gray-800">Tujuan Pembelajaran</h3>
+                <p class="text-xs text-gray-500">Capaian Pembelajaran Bahasa Arab Fase B</p>
+            </div>
+            
+            <div class="space-y-3 mb-6 text-xs md:text-sm text-gray-700">
+                <div class="p-3 bg-amber-50 rounded-xl border border-amber-200">
+                    <strong class="text-amber-900 block mb-1">📌 Capaian Pembelajaran (CP):</strong>
+                    Peserta didik mampu merespon, memahami, dan mengekspresikan kosakata Bahasa Arab tentang nama-nama hewan (<span class="arabic-text font-bold text-base">أَسْمَاءُ الْحَيَوَانَاتِ</span>) dengan baik.
+                </div>
+                <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200">
+                    <strong class="text-emerald-900 block mb-1">🎯 Indikator Keberhasilan:</strong>
+                    <ul class="list-disc list-inside space-y-1 text-gray-600">
+                        <li>Melafalkan 8 kosakata nama-nama hewan dengan makhraj yang benar.</li>
+                        <li>Mengidentifikasi arti mufradat hewan melalui gambar visual.</li>
+                        <li>Memasangkan kata bahasa Arab dengan gambar hewan secara pas.</li>
+                        <li>Menjawab 10 soal evaluasi formatif dengan skor minimal KKM.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button onclick="closeModal('modal-goals')" class="w-full bg-[#065F46] text-white font-bold py-3 rounded-xl hover:bg-emerald-700 transition">
+                Paham & Tutup
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal Referensi -->
+    <div id="modal-refs" class="fixed inset-0 z-50 flex items-center justify-center modal-overlay hidden px-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden p-6 border-t-8 border-[#065F46]">
+            <div class="text-center mb-4">
+                <span class="text-5xl block mb-2">📚</span>
+                <h3 class="text-2xl font-bold text-gray-800">Referensi & Sumber Materi</h3>
+                <p class="text-xs text-gray-500">Rujukan Kurikulum & Literatur</p>
+            </div>
+            
+            <ul class="space-y-2.5 mb-6 text-xs md:text-sm text-gray-700">
+                <li class="p-3 bg-gray-50 rounded-xl border border-gray-200 flex items-start space-x-2">
+                    <span>📜</span>
+                    <span><strong>KMA No. 183 Tahun 2019</strong> tentang Kurikulum PAI dan Bahasa Arab pada Madrasah.</span>
+                </li>
+                <li class="p-3 bg-gray-50 rounded-xl border border-gray-200 flex items-start space-x-2">
+                    <span>📖</span>
+                    <span><strong>Buku Siswa Bahasa Arab Kelas III MI</strong> - Direktorat KSKK Madrasah, Kementerian Agama RI.</span>
+                </li>
+                <li class="p-3 bg-gray-50 rounded-xl border border-gray-200 flex items-start space-x-2">
+                    <span>📙</span>
+                    <span><strong>Kamus Al-Munawwir</strong> Arab - Indonesia Terlengkap.</span>
+                </li>
+                <li class="p-3 bg-gray-50 rounded-xl border border-gray-200 flex items-start space-x-2">
+                    <span>🏖️</span>
+                    <span><strong>Konteks Lokal Gorontalo:</strong> Lingkungan Pesisir & Pertanian Agraris Kabupaten Gorontalo.</span>
+                </li>
+            </ul>
+
+            <button onclick="closeModal('modal-refs')" class="w-full bg-[#065F46] text-white font-bold py-3 rounded-xl hover:bg-emerald-700 transition">
+                Tutup
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal Informasi Ringkas Sistem -->
+    <div id="modal-info" class="fixed inset-0 z-50 flex items-center justify-center modal-overlay hidden px-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden p-6 border-t-8 border-[#065F46]">
+            <div class="text-center mb-4">
+                <a href="https://freeimage.host/i/na4yDpp" target="_blank" rel="noopener noreferrer">
+                    <img src="https://iili.io/na4yDpp.md.jpg" alt="Foto Uswatun Hasan, S.Pd" class="w-20 h-20 rounded-full border-2 border-emerald-600 object-cover mx-auto mb-2 shadow" onerror="this.onerror=null; this.src='https://placehold.co/100x100/065F46/FFFFFF?text=Pengembang';">
+                </a>
+                <h3 class="text-xl font-bold text-gray-800">MPI Bahasa Arab Kelas III</h3>
+                <p class="text-xs text-emerald-700 font-bold">MIS Muhammadiyah Iloponu</p>
+            </div>
+            
+            <div class="text-xs md:text-sm text-gray-600 space-y-2 mb-6">
+                <p><strong>Pengembang:</strong> Uswatun Hasan, S.Pd</p>
+                <p><strong>Materi:</strong> Nama-nama Hewan (<span class="arabic-text font-bold">أَسْمَاءُ الْحَيَوَانَاتِ</span>)</p>
+                <p><strong>Fitur:</strong> Single File Offline, Flashcard, Matching Game, Kuis 10 Soal Interaktif.</p>
+            </div>
+
+            <button onclick="closeModal('modal-info')" class="w-full bg-[#065F46] text-white font-bold py-2.5 rounded-xl hover:bg-emerald-700 transition">
+                Tutup
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal Registrasi Siswa -->
+    <div id="modal-student" class="fixed inset-0 z-50 flex items-center justify-center modal-overlay hidden px-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden p-6 border-t-8 border-[#065F46]">
+            <div class="text-center mb-6">
+                <span class="text-5xl block mb-2">📝</span>
+                <h3 class="text-2xl font-bold text-gray-800">Identitas Peserta Kuis</h3>
+                <p class="text-sm text-gray-500 mt-1">Isi nama dan kelasmu sebelum memulai evaluasi 10 soal.</p>
+            </div>
+            
+            <form onsubmit="handleStudentSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Nama Lengkap Siswa *</label>
+                    <input type="text" id="input-student-name" required placeholder="Contoh: Ahmad Abdullah" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#065F46] focus:outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Kelas / Rombel *</label>
+                    <select id="input-student-class" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#065F46] focus:outline-none transition">
+                        <option value="">-- Pilih Kelas --</option>
+                        <option value="Kelas III A">Kelas III A</option>
+                        <option value="Kelas III B">Kelas III B</option>
+                        <option value="Kelas III C">Kelas III C</option>
+                    </select>
+                </div>
+                <div class="pt-2 flex space-x-3">
+                    <button type="button" onclick="closeStudentModal()" class="w-1/3 bg-gray-100 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-200 transition">
+                        Batal
+                    </button>
+                    <button type="submit" class="w-2/3 bg-[#065F46] text-white font-bold py-3 rounded-xl shadow-lg hover:bg-emerald-700 transition">
+                        Mulai Kuis 🚀
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Feedback Edukatif -->
+    <div id="custom-modal" class="fixed inset-0 z-50 flex items-center justify-center modal-overlay hidden px-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden transform transition-all scale-95 opacity-0" id="modal-content-box">
+            <div id="modal-header" class="p-4 text-center">
+                <span id="modal-icon" class="text-5xl block mb-2">💡</span>
+                <h3 id="modal-title" class="text-xl font-bold">Umpan Balik</h3>
+            </div>
+            <div class="px-6 pb-6 text-center">
+                <p id="modal-message" class="text-gray-600 mb-6 text-sm md:text-base leading-relaxed"></p>
+                <button id="modal-btn" class="w-full text-white font-bold py-3 rounded-xl shadow transition">
+                    Lanjutkan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Splash Screen dismissal
+        function dismissSplash() {
+            const splash = document.getElementById('splash-screen');
+            if (splash) {
+                splash.classList.add('fade-out');
+                setTimeout(() => splash.remove(), 600);
+            }
+        }
+
+        // Generic Modal Handler
+        function openModal(modalId) {
+            const el = document.getElementById(modalId);
+            if (el) el.classList.remove('hidden');
+        }
+        function closeModal(modalId) {
+            const el = document.getElementById(modalId);
+            if (el) el.classList.add('hidden');
+        }
+
+        // Data Vocabulary Utama
+        const vocabularies = [
+            { id: 'v1', arabic: 'طَيْرٌ', lat: 'Thoyrun', ind: 'Burung', emoji: '🐦' },
+            { id: 'v2', arabic: 'دَجَاجَةٌ', lat: 'Dajaajatun', ind: 'Ayam Betina', emoji: '🐔' },
+            { id: 'v3', arabic: 'إِوَزَّةٌ', lat: 'Iwazzatun', ind: 'Angsa', emoji: '🦢' },
+            { id: 'v4', arabic: 'مَاعِزٌ', lat: 'Maa\'izun', ind: 'Kambing', emoji: '🐐' },
+            { id: 'v5', arabic: 'قِطٌّ', lat: 'Qiththun', ind: 'Kucing', emoji: '🐈' },
+            { id: 'v6', arabic: 'أَرْنَبٌ', lat: 'Arnabun', ind: 'Kelinci', emoji: '🐇' },
+            { id: 'v7', arabic: 'سَمَكَةٌ', lat: 'Samakatun', ind: 'Ikan', emoji: '🐟' },
+            { id: 'v8', arabic: 'بَطَّةٌ', lat: 'Baththatun', ind: 'Bebek', emoji: '🦆' }
+        ];
+
+        // 10 Soal Variatif
+        const quizBank = [
+            {
+                type: 'single_choice',
+                typeName: 'Pilihan Ganda',
+                question: 'Masyarakat pesisir dan nelayan di Gorontalo sering menemukannya di laut. Apa Bahasa Arab dari "Ikan"?',
+                options: ['سَمَكَةٌ', 'قِطٌّ', 'طَيْرٌ', 'مَاعِزٌ'],
+                answer: 0,
+                explanation: 'Benar! "سَمَكَةٌ" (Samakatun) artinya Ikan.'
+            },
+            {
+                type: 'true_false',
+                typeName: 'Benar / Salah',
+                question: 'Pernyataan: Kata "طَيْرٌ" (Thoyrun) memiliki arti Ayam Betina.',
+                answer: false,
+                explanation: 'Salah. "طَيْرٌ" (Thoyrun) artinya Burung. Sedangkan Ayam Betina adalah "دَجَاجَةٌ".'
+            },
+            {
+                type: 'multiple_complex',
+                typeName: 'Pilihan Ganda Kompleks',
+                question: 'Manakah di antara hewan-hewan berikut yang tergolong jenis unggas (berbulu dan bersayap)? (Pilih semua jawaban benar)',
+                options: [
+                    { text: 'طَيْرٌ (Burung)', correct: true },
+                    { text: 'دَجَاجَةٌ (Ayam Betina)', correct: true },
+                    { text: 'مَاعِزٌ (Kambing)', correct: false },
+                    { text: 'بَطَّةٌ (Bebek)', correct: true }
+                ],
+                explanation: 'Tepat! Burung (طَيْرٌ), Ayam (دَجَاجَةٌ), dan Bebek (بَطَّةٌ) adalah jenis unggas.'
+            },
+            {
+                type: 'drag_drop',
+                typeName: 'Aktivitas Drag & Drop',
+                question: 'Pasangkan kata Bahasa Arab di bawah ini ke dalam kotak hewan yang tepat!',
+                dragItems: [
+                    { id: 'item_goat', label: 'مَاعِزٌ', targetId: 'target_goat' },
+                    { id: 'item_rabbit', label: 'أَرْنَبٌ', targetId: 'target_rabbit' }
+                ],
+                targets: [
+                    { id: 'target_goat', label: '🐐 Kambing', correctItemId: 'item_goat' },
+                    { id: 'target_rabbit', label: '🐇 Kelinci', correctItemId: 'item_rabbit' }
+                ],
+                explanation: 'Sempurna! "مَاعِزٌ" adalah Kambing dan "أَرْنَبٌ" adalah Kelinci.'
+            },
+            {
+                type: 'single_choice',
+                typeName: 'Pilihan Ganda',
+                question: 'Hewan peliharaan ini suka makan wortel dan melompat lincah. Bahasa Arab dari "Kelinci" adalah...',
+                options: ['مَاعِزٌ', 'أَرْنَبٌ', 'دَجَاجَةٌ', 'إِوَزَّةٌ'],
+                answer: 1,
+                explanation: 'Benar! "أَرْنَبٌ" (Arnabun) artinya Kelinci.'
+            },
+            {
+                type: 'true_false',
+                typeName: 'Benar / Salah',
+                question: 'Pernyataan: Kata "قِطٌّ" (Qiththun) artinya adalah Kucing.',
+                answer: true,
+                explanation: 'Benar sekali! "قِطٌّ" (Qiththun) artinya Kucing.'
+            },
+            {
+                type: 'multiple_complex',
+                typeName: 'Pilihan Ganda Kompleks',
+                question: 'Di area perairan dekat danau/persawahan, hewan mana saja yang sering berada atau berenang di air? (Pilih semua jawaban benar)',
+                options: [
+                    { text: 'سَمَكَةٌ (Ikan)', correct: true },
+                    { text: 'إِوَزَّةٌ (Angsa)', correct: true },
+                    { text: 'قِطٌّ (Kucing)', correct: false },
+                    { text: 'بَطَّةٌ (Bebek)', correct: true }
+                ],
+                explanation: 'Bagus! Ikan, Angsa, dan Bebek sering beraktivitas di dalam/sekitarnya air.'
+            },
+            {
+                type: 'drag_drop',
+                typeName: 'Aktivitas Drag & Drop',
+                question: 'Geser atau ketuk kata Bahasa Arab untuk mencocokkan dengan jenis hewan berikut:',
+                dragItems: [
+                    { id: 'item_cat', label: 'قِطٌّ', targetId: 'target_cat' },
+                    { id: 'item_goose', label: 'إِوَزَّةٌ', targetId: 'target_goose' }
+                ],
+                targets: [
+                    { id: 'target_cat', label: '🐈 Kucing', correctItemId: 'item_cat' },
+                    { id: 'target_goose', label: '🦢 Angsa', correctItemId: 'item_goose' }
+                ],
+                explanation: 'Hebat! "قِطٌّ" adalah Kucing dan "إِوَزَّةٌ" adalah Angsa.'
+            },
+            {
+                type: 'single_choice',
+                typeName: 'Pilihan Ganda',
+                question: 'Ibu guru meminta siswa menyebutkan Bahasa Arab untuk "Bebek" yang sering berenang di persawahan. Jawabannya adalah...',
+                options: ['بَطَّةٌ', 'طَيْرٌ', 'سَمَكَةٌ', 'أَرْنَبٌ'],
+                answer: 0,
+                explanation: 'Tepat! "بَطَّةٌ" (Baththatun) adalah Bebek.'
+            },
+            {
+                type: 'true_false',
+                typeName: 'Benar / Salah',
+                question: 'Pernyataan: Kata "إِوَزَّةٌ" (Iwazzatun) adalah Bahasa Arab untuk Angsa.',
+                answer: true,
+                explanation: 'Benar! "إِوَزَّةٌ" (Iwazzatun) artinya Angsa.'
+            }
+        ];
+
+        // State Global Aplikasi
+        let currentStudent = { name: '', class: '' };
+        let currentQuestionIndex = 0;
+        let quizScore = 0;
+        let quizAnswersHistory = [];
+        let userSelectedDragItem = null;
+
+        const pages = ['page-home', 'page-learn', 'page-play', 'page-quiz', 'page-result'];
+
+        function navTo(target) {
+            pages.forEach(p => {
+                const el = document.getElementById(p);
+                if (el) {
+                    el.classList.add('hidden');
+                    el.classList.remove('page-enter');
+                }
+            });
+            
+            const targetPage = document.getElementById(`page-${target}`);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+                void targetPage.offsetWidth; 
+                targetPage.classList.add('page-enter');
+            }
+            
+            if (target === 'learn') initLearn();
+            if (target === 'play') initGame();
+            
+            window.scrollTo(0, 0);
+        }
+
+        function openStudentModal() {
+            document.getElementById('modal-student').classList.remove('hidden');
+        }
+
+        function closeStudentModal() {
+            document.getElementById('modal-student').classList.add('hidden');
+        }
+
+        function handleStudentSubmit(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('input-student-name').value.trim();
+            const classInput = document.getElementById('input-student-class').value;
+
+            if (!nameInput || !classInput) return;
+
+            currentStudent.name = nameInput;
+            currentStudent.class = classInput;
+
+            closeStudentModal();
+            startQuiz();
+        }
+
+        function showModal(title, message, isSuccess, callback) {
+            const modal = document.getElementById('custom-modal');
+            const contentBox = document.getElementById('modal-content-box');
+            const icon = document.getElementById('modal-icon');
+            const titleEl = document.getElementById('modal-title');
+            const messageEl = document.getElementById('modal-message');
+            const btn = document.getElementById('modal-btn');
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                contentBox.classList.remove('scale-95', 'opacity-0');
+                contentBox.classList.add('scale-100', 'opacity-100');
+            }, 10);
+
+            titleEl.innerText = title;
+            messageEl.innerText = message;
+            
+            if (isSuccess) {
+                icon.innerText = '✨';
+                document.getElementById('modal-header').className = 'p-5 text-center bg-emerald-100 text-emerald-800';
+                btn.className = 'w-full font-bold py-3 rounded-xl shadow transition bg-emerald-600 text-white hover:bg-emerald-700';
+            } else {
+                icon.innerText = '💡';
+                document.getElementById('modal-header').className = 'p-5 text-center bg-amber-100 text-amber-800';
+                btn.className = 'w-full font-bold py-3 rounded-xl shadow transition bg-amber-500 text-white hover:bg-amber-600';
+            }
+
+            btn.onclick = () => {
+                contentBox.classList.remove('scale-100', 'opacity-100');
+                contentBox.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    if (callback) callback();
+                }, 200);
+            };
+        }
+
+        function initLearn() {
+            const container = document.getElementById('flashcard-container');
+            container.innerHTML = '';
+
+            vocabularies.forEach(vocab => {
+                const card = document.createElement('div');
+                card.className = 'flashcard';
+                card.onclick = () => card.classList.toggle('flipped');
+
+                card.innerHTML = `
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <span class="text-5xl md:text-6xl mb-2">${vocab.emoji}</span>
+                            <span class="font-bold text-gray-700 text-sm md:text-base">${vocab.ind}</span>
+                        </div>
+                        <div class="flashcard-back">
+                            <span class="arabic-text text-4xl md:text-5xl font-bold mb-2 leading-loose">${vocab.arabic}</span>
+                            <span class="text-emerald-200 text-sm italic">${vocab.lat}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        let gameSelectedEmoji = null;
+        let matchedPairs = 0;
+
+        function initGame() {
+            gameSelectedEmoji = null;
+            matchedPairs = 0;
+            document.getElementById('game-finish-btn').style.display = 'none';
+            
+            const emojiCol = document.getElementById('game-emoji-col');
+            const wordCol = document.getElementById('game-word-col');
+            emojiCol.innerHTML = '';
+            wordCol.innerHTML = '';
+
+            let shuffledEmojis = [...vocabularies].sort(() => 0.5 - Math.random());
+            let shuffledWords = [...vocabularies].sort(() => 0.5 - Math.random());
+
+            shuffledEmojis.forEach(v => {
+                const btn = document.createElement('button');
+                btn.className = 'match-item bg-white border-2 border-gray-200 p-4 rounded-xl shadow-sm text-center flex flex-col items-center justify-center';
+                btn.id = 'emojibtn_' + v.id;
+                btn.innerHTML = `<span class="text-4xl">${v.emoji}</span><span class="text-xs text-gray-500 mt-1">${v.ind}</span>`;
+                
+                btn.onclick = () => {
+                    if (btn.classList.contains('matched')) return;
+                    document.querySelectorAll('#game-emoji-col .match-item').forEach(el => el.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    gameSelectedEmoji = v.id;
+                };
+                emojiCol.appendChild(btn);
+            });
+
+            shuffledWords.forEach(v => {
+                const btn = document.createElement('button');
+                btn.className = 'match-item bg-white border-2 border-gray-200 p-4 rounded-xl shadow-sm text-center flex flex-col items-center justify-center min-h-[80px]';
+                btn.id = 'wordbtn_' + v.id;
+                btn.innerHTML = `<span class="arabic-text text-2xl font-bold text-emerald-800">${v.arabic}</span>`;
+                
+                btn.onclick = () => handleWordSelect(btn, v);
+                wordCol.appendChild(btn);
+            });
+        }
+
+        function handleWordSelect(wordElement, wordData) {
+            if (wordElement.classList.contains('matched')) return;
+
+            if (!gameSelectedEmoji) {
+                showModal('Pilih Gambar Dulu', 'Sentuh gambar hewan di sebelah kiri terlebih dahulu, lalu pilih bahasa Arabnya.', false);
+                return;
+            }
+
+            if (gameSelectedEmoji === wordData.id) {
+                const emojiElement = document.getElementById('emojibtn_' + wordData.id);
+                emojiElement.classList.remove('selected');
+                emojiElement.classList.add('matched');
+                wordElement.classList.add('matched');
+                wordElement.innerHTML += `<span class="text-emerald-500 text-xl font-bold ml-1">✓</span>`;
+                
+                gameSelectedEmoji = null;
+                matchedPairs++;
+
+                if (matchedPairs === vocabularies.length) {
+                    setTimeout(() => {
+                        document.getElementById('game-finish-btn').style.display = 'block';
+                        document.getElementById('game-finish-btn').scrollIntoView({ behavior: 'smooth' });
+                    }, 400);
+                }
+            } else {
+                showModal('Belum Tepat', 'Pasangan belum cocok. Coba perhatikan baik-baik ya!', false, () => {
+                    document.querySelectorAll('#game-emoji-col .match-item').forEach(el => el.classList.remove('selected'));
+                    gameSelectedEmoji = null;
+                });
+            }
+        }
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            quizScore = 0;
+            quizAnswersHistory = [];
+
+            document.getElementById('quiz-student-name').innerText = currentStudent.name;
+            document.getElementById('quiz-student-class').innerText = currentStudent.class;
+
+            navTo('quiz');
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            const q = quizBank[currentQuestionIndex];
+            const total = quizBank.length;
+
+            document.getElementById('quiz-progress').innerText = `Soal ${currentQuestionIndex + 1} / ${total}`;
+            document.getElementById('question-type-badge').innerText = q.typeName;
+            document.getElementById('question-text').innerText = q.question;
+
+            const percent = ((currentQuestionIndex + 1) / total) * 100;
+            document.getElementById('quiz-progress-bar').style.width = percent + '%';
+
+            const container = document.getElementById('quiz-interactive-area');
+            container.innerHTML = '';
+            userSelectedDragItem = null;
+
+            if (q.type === 'single_choice') {
+                renderSingleChoice(q, container);
+            } else if (q.type === 'true_false') {
+                renderTrueFalse(q, container);
+            } else if (q.type === 'multiple_complex') {
+                renderMultipleComplex(q, container);
+            } else if (q.type === 'drag_drop') {
+                renderDragDrop(q, container);
+            }
+        }
+
+        let tempSingleAnswer = null;
+        function renderSingleChoice(q, container) {
+            tempSingleAnswer = null;
+            const div = document.createElement('div');
+            div.className = 'grid grid-cols-1 md:grid-cols-2 gap-3';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                const isArabic = /[\u0600-\u06FF]/.test(opt);
+                const fontStyle = isArabic ? 'arabic-text text-2xl py-3' : 'text-base font-semibold py-3';
+
+                btn.className = `option-btn border-2 border-gray-200 rounded-2xl px-4 text-left hover:border-emerald-500 hover:bg-emerald-50 transition ${fontStyle} text-gray-800 flex items-center space-x-3`;
+                btn.onclick = () => {
+                    container.querySelectorAll('.option-btn').forEach(b => {
+                        b.classList.remove('border-emerald-600', 'bg-emerald-100', 'ring-2', 'ring-emerald-400');
+                    });
+                    btn.classList.add('border-emerald-600', 'bg-emerald-100', 'ring-2', 'ring-emerald-400');
+                    tempSingleAnswer = idx;
+                };
+
+                btn.innerHTML = `<span class="w-7 h-7 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center text-xs font-bold">${String.fromCharCode(65 + idx)}</span> <span>${opt}</span>`;
+                div.appendChild(btn);
+            });
+            container.appendChild(div);
+        }
+
+        let tempTFAnswer = null;
+        function renderTrueFalse(q, container) {
+            tempTFAnswer = null;
+            const div = document.createElement('div');
+            div.className = 'flex flex-col sm:flex-row gap-4 justify-center items-center py-4';
+
+            const btnTrue = document.createElement('button');
+            btnTrue.className = 'tf-btn w-full sm:w-1/2 p-5 border-2 border-emerald-300 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-lg flex items-center justify-center space-x-2 transition';
+            btnTrue.innerHTML = `<span class="text-2xl">✅</span> <span>BENAR (صَحِيح)</span>`;
+            btnTrue.onclick = () => {
+                container.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('ring-4', 'ring-emerald-600', 'bg-emerald-200'));
+                btnTrue.classList.add('ring-4', 'ring-emerald-600', 'bg-emerald-200');
+                tempTFAnswer = true;
+            };
+
+            const btnFalse = document.createElement('button');
+            btnFalse.className = 'tf-btn w-full sm:w-1/2 p-5 border-2 border-rose-300 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-800 font-bold text-lg flex items-center justify-center space-x-2 transition';
+            btnFalse.innerHTML = `<span class="text-2xl">❌</span> <span>SALAH (خَطَأ)</span>`;
+            btnFalse.onclick = () => {
+                container.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('ring-4', 'ring-rose-600', 'bg-rose-200'));
+                btnFalse.classList.add('ring-4', 'ring-rose-600', 'bg-rose-200');
+                tempTFAnswer = false;
+            };
+
+            div.appendChild(btnTrue);
+            div.appendChild(btnFalse);
+            container.appendChild(div);
+        }
+
+        function renderMultipleComplex(q, container) {
+            const div = document.createElement('div');
+            div.className = 'space-y-3';
+
+            q.options.forEach((opt, idx) => {
+                const label = document.createElement('label');
+                label.className = 'flex items-center space-x-3 p-3 rounded-2xl border-2 border-gray-200 hover:bg-amber-50 cursor-pointer transition';
+                
+                label.innerHTML = `
+                    <input type="checkbox" value="${idx}" class="complex-cb w-5 h-5 text-emerald-600 rounded focus:ring-emerald-500">
+                    <span class="text-base text-gray-800 font-medium">${opt.text}</span>
+                `;
+                div.appendChild(label);
+            });
+            container.appendChild(div);
+        }
+
+        let dragAssignments = {};
+        function renderDragDrop(q, container) {
+            dragAssignments = {};
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex flex-col space-y-4';
+
+            const instructionText = document.createElement('p');
+            instructionText.className = 'text-xs text-amber-700 bg-amber-50 p-2 rounded-lg border border-amber-200';
+            instructionText.innerText = '💡 Petunjuk: Ketuk kata Arab lalu ketuk kotak tujuan, atau geser (drag) ke kotak tujuan.';
+            wrapper.appendChild(instructionText);
+
+            const itemsBox = document.createElement('div');
+            itemsBox.className = 'flex flex-wrap gap-3 justify-center p-3 bg-gray-50 rounded-2xl border border-dashed border-gray-300 min-h-[60px]';
+            itemsBox.id = 'drag-source-box';
+
+            q.dragItems.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'drag-item bg-white border-2 border-emerald-500 text-emerald-800 font-bold text-xl px-4 py-2 rounded-xl shadow-sm arabic-text cursor-pointer';
+                el.id = item.id;
+                el.setAttribute('draggable', 'true');
+                el.innerText = item.label;
+
+                el.onclick = () => {
+                    document.querySelectorAll('.drag-item').forEach(d => d.classList.remove('selected-item'));
+                    el.classList.add('selected-item');
+                    userSelectedDragItem = item.id;
+                };
+
+                el.ondragstart = (ev) => {
+                    ev.dataTransfer.setData('text/plain', item.id);
+                    userSelectedDragItem = item.id;
+                };
+
+                itemsBox.appendChild(el);
+            });
+
+            const targetsBox = document.createElement('div');
+            targetsBox.className = 'grid grid-cols-1 md:grid-cols-2 gap-3';
+
+            q.targets.forEach(target => {
+                const zone = document.createElement('div');
+                zone.className = 'drop-zone bg-white border-2 border-dashed border-gray-300 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer';
+                zone.id = target.id;
+
+                zone.innerHTML = `
+                    <span class="text-sm font-bold text-gray-700 mb-1">${target.label}</span>
+                    <div class="dropped-holder w-full flex justify-center items-center min-h-[40px] text-emerald-700 font-bold arabic-text text-xl">
+                        <span class="text-xs text-gray-400 font-normal italic">[ Letakkan Kata ]</span>
+                    </div>
+                `;
+
+                zone.onclick = () => {
+                    if (userSelectedDragItem) {
+                        assignDragItemToZone(userSelectedDragItem, target.id, q);
+                    }
+                };
+
+                zone.ondragover = (ev) => ev.preventDefault();
+                zone.ondragenter = () => zone.classList.add('drag-over');
+                zone.ondragleave = () => zone.classList.remove('drag-over');
+                zone.ondrop = (ev) => {
+                    ev.preventDefault();
+                    zone.classList.remove('drag-over');
+                    const itemId = ev.dataTransfer.getData('text/plain') || userSelectedDragItem;
+                    if (itemId) {
+                        assignDragItemToZone(itemId, target.id, q);
+                    }
+                };
+
+                targetsBox.appendChild(zone);
+            });
+
+            wrapper.appendChild(itemsBox);
+            wrapper.appendChild(targetsBox);
+            container.appendChild(wrapper);
+        }
+
+        function assignDragItemToZone(itemId, targetId, q) {
+            Object.keys(dragAssignments).forEach(tId => {
+                if (dragAssignments[tId] === itemId) {
+                    delete dragAssignments[tId];
+                    const prevZoneHolder = document.querySelector(`#${tId} .dropped-holder`);
+                    if (prevZoneHolder) prevZoneHolder.innerHTML = `<span class="text-xs text-gray-400 font-normal italic">[ Letakkan Kata ]</span>`;
+                }
+            });
+
+            dragAssignments[targetId] = itemId;
+
+            const itemObj = q.dragItems.find(i => i.id === itemId);
+            const zoneHolder = document.querySelector(`#${targetId} .dropped-holder`);
+            if (zoneHolder && itemObj) {
+                zoneHolder.innerHTML = `<span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-lg border border-emerald-300">${itemObj.label}</span>`;
+            }
+
+            document.querySelectorAll('.drag-item').forEach(d => d.classList.remove('selected-item'));
+            userSelectedDragItem = null;
+        }
+
+        function submitCurrentAnswer() {
+            const q = quizBank[currentQuestionIndex];
+            let isCorrect = false;
+            let userAnswerStr = '';
+
+            if (q.type === 'single_choice') {
+                if (tempSingleAnswer === null) {
+                    showModal('Pilih Jawaban', 'Silakan pilih salah satu jawaban terlebih dahulu!', false);
+                    return;
+                }
+                isCorrect = (tempSingleAnswer === q.answer);
+                userAnswerStr = String.fromCharCode(65 + tempSingleAnswer) + '. ' + q.options[tempSingleAnswer];
+            } else if (q.type === 'true_false') {
+                if (tempTFAnswer === null) {
+                    showModal('Pilih Jawaban', 'Silakan tentukan apakah pernyataan ini Benar atau Salah!', false);
+                    return;
+                }
+                isCorrect = (tempTFAnswer === q.answer);
+                userAnswerStr = tempTFAnswer ? 'BENAR (صَحِيح)' : 'SALAH (خَطَأ)';
+            } else if (q.type === 'multiple_complex') {
+                const checkboxes = document.querySelectorAll('.complex-cb');
+                const selectedIndices = Array.from(checkboxes).filter(cb => cb.checked).map(cb => parseInt(cb.value));
+
+                if (selectedIndices.length === 0) {
+                    showModal('Pilih Jawaban', 'Silakan centang setidaknya satu pilihan jawaban!', false);
+                    return;
+                }
+
+                const correctIndices = q.options.map((opt, idx) => opt.correct ? idx : null).filter(val => val !== null);
+                
+                const matchedAll = correctIndices.length === selectedIndices.length && 
+                                   correctIndices.every(idx => selectedIndices.includes(idx));
+                isCorrect = matchedAll;
+                userAnswerStr = selectedIndices.map(idx => q.options[idx].text).join(', ');
+            } else if (q.type === 'drag_drop') {
+                const totalTargets = q.targets.length;
+                const assignedCount = Object.keys(dragAssignments).length;
+
+                if (assignedCount < totalTargets) {
+                    showModal('Lengkapi Pasangan', 'Silakan lengkapi semua pasangan kata sebelum melanjutkan!', false);
+                    return;
+                }
+
+                let allPairsCorrect = true;
+                let answersArr = [];
+                q.targets.forEach(target => {
+                    if (dragAssignments[target.id] !== target.correctItemId) {
+                        allPairsCorrect = false;
+                    }
+                    const itemObj = q.dragItems.find(i => i.id === dragAssignments[target.id]);
+                    answersArr.push(`${target.label} dipasangkan dengan ${itemObj ? itemObj.label : '?'}`);
+                });
+                isCorrect = allPairsCorrect;
+                userAnswerStr = answersArr.join(' | ');
+            }
+
+            if (isCorrect) {
+                quizScore += 10;
+            }
+            quizAnswersHistory.push({
+                questionIndex: currentQuestionIndex,
+                questionText: q.question,
+                userAnswer: userAnswerStr,
+                isCorrect: isCorrect,
+                explanation: q.explanation
+            });
+
+            showModal(
+                isCorrect ? 'Jawaban Tepat! ✨' : 'Kurang Tepat 💡',
+                q.explanation,
+                isCorrect,
+                () => {
+                    currentQuestionIndex++;
+                    if (currentQuestionIndex < quizBank.length) {
+                        loadQuizQuestion();
+                    } else {
+                        finishQuiz();
+                    }
+                }
+            );
+        }
+
+        function finishQuiz() {
+            document.getElementById('result-name').innerText = currentStudent.name;
+            document.getElementById('result-class').innerText = currentStudent.class;
+            document.getElementById('final-score').innerText = quizScore;
+
+            const iconEl = document.getElementById('result-icon');
+            if (quizScore === 100) iconEl.innerText = '🌟🏆🌟';
+            else if (quizScore >= 70) iconEl.innerText = '🎉👍';
+            else iconEl.innerText = '💪🌱';
+
+            const summaryContainer = document.getElementById('quiz-summary-list');
+            summaryContainer.innerHTML = '';
+
+            let benar = 0;
+            let salah = 0;
+
+            quizAnswersHistory.forEach((item, index) => {
+                if (item.isCorrect) benar++;
+                else salah++;
+
+                const card = document.createElement('div');
+                card.className = `p-3 rounded-xl border text-xs md:text-sm flex items-start space-x-2 ${item.isCorrect ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900'}`;
+                
+                card.innerHTML = `
+                    <span class="text-base leading-none">${item.isCorrect ? '✅' : '❌'}</span>
+                    <div>
+                        <p class="font-bold">Soal ${index + 1}: ${item.questionText.substring(0, 45)}...</p>
+                        <p class="text-xs font-semibold text-gray-700 mt-1">Jawaban Siswa: <span class="font-normal text-blue-700">${item.userAnswer}</span></p>
+                        <p class="text-xs opacity-80 mt-1">${item.explanation}</p>
+                    </div>
+                `;
+                summaryContainer.appendChild(card);
+            });
+
+            navTo('result');
+            
+            // Panggil fungsi simpan ke database
+            saveToDatabase(benar, salah);
+        }
+
+        // ==========================================
+        // INTEGRASI DATABASE GOOGLE APPS SCRIPT
+        // ==========================================
+        // PENTING: Ganti nilai ini dengan URL hasil Deploy dari Google Apps Script!
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz7iIOuaxtSUNbpnCJDCLyDz63gibaOl2b1W7b9NI-aXzMGPHo5KLhbtdBQBap1-RsE/exec";
+
+        function saveToDatabase(benar, salah) {
+            const statusCard = document.getElementById('save-status-card');
+            const spinner = document.getElementById('save-spinner');
+            const title = document.getElementById('save-status-title');
+            const desc = document.getElementById('save-status-desc');
+            
+            if (!statusCard) return; 
+            
+            statusCard.className = 'bg-blue-50 rounded-2xl p-4 border-2 border-blue-200 mb-6 flex items-center space-x-3 transition-all duration-300';
+            spinner.innerText = '⏳';
+            spinner.className = 'animate-spin text-3xl inline-block';
+            title.innerText = 'Menyimpan ke Database...';
+            title.className = 'font-bold text-blue-800 text-sm';
+            desc.innerText = 'Mohon tunggu sebentar, sedang mengirim data.';
+            
+            if (GAS_WEB_APP_URL === "MASUKKAN_URL_WEB_APP_DISINI") {
+                spinner.className = 'text-3xl inline-block';
+                spinner.innerText = '⚠️';
+                statusCard.className = 'bg-amber-50 rounded-2xl p-4 border-2 border-amber-200 mb-6 flex items-center space-x-3 transition-all duration-300';
+                title.innerText = 'Database Belum Dikonfigurasi';
+                title.className = 'font-bold text-amber-800 text-sm';
+                desc.innerText = 'Silakan masukkan URL Web App Google Apps Script di kode HTML.';
+                return;
+            }
+
+            const payload = {
+                nama: currentStudent.name,
+                kelas: currentStudent.class,
+                nilai: quizScore,
+                benar: benar,
+                salah: salah,
+                detail: quizAnswersHistory
+            };
+
+            // Menggunakan method POST dan tipe teks untuk menghindari preflight OPTIONS yang diblokir CORS
+            fetch(GAS_WEB_APP_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+            })
+            .then(response => response.json())
+            .then(data => {
+                spinner.className = 'text-3xl inline-block';
+                spinner.innerText = '✅';
+                statusCard.className = 'bg-emerald-50 rounded-2xl p-4 border-2 border-emerald-200 mb-6 flex items-center space-x-3 transition-all duration-300';
+                title.innerText = 'Berhasil Disimpan!';
+                title.className = 'font-bold text-emerald-800 text-sm';
+                desc.innerText = 'Data evaluasi telah tersimpan ke spreadsheet guru.';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                spinner.className = 'text-3xl inline-block';
+                spinner.innerText = '❌';
+                statusCard.className = 'bg-rose-50 rounded-2xl p-4 border-2 border-rose-200 mb-6 flex items-center space-x-3 transition-all duration-300';
+                title.innerText = 'Gagal Menyimpan';
+                title.className = 'font-bold text-rose-800 text-sm';
+                desc.innerText = 'Periksa koneksi internet atau pastikan URL Web App benar.';
+            });
+        }
+
+        window.onload = () => {
+            // Auto setup complete
+        };
+    </script>
+</body>
+</html>
